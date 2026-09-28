@@ -51,7 +51,7 @@ section{padding:48px 0 16px}
 
 /* ===== 히어로 ===== */
 .hero{background:var(--accent-soft);padding:56px 0}
-.hero .wrap{display:flex;gap:48px;align-items:center}
+.hero-top{display:flex;gap:48px;align-items:center}
 .hero-l{flex:1;display:flex;flex-direction:column;gap:16px}
 .hero-l small{font-size:14px;font-weight:600;color:var(--accent)}
 .hero-l h1{font-size:44px;line-height:1.25}
@@ -66,8 +66,8 @@ section{padding:48px 0 16px}
 .stat3 b{font-size:22px}
 .stat3 em{font-style:normal;font-size:12px;color:var(--muted)}
 .hero-r p{font-size:13px;line-height:1.6;color:var(--muted)}
-.due{margin-top:8px;background:#fff;border:2px solid var(--warm);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:14px;max-width:720px}
-.due-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.due{margin:36px auto 0;background:#fff;border:2px solid var(--warm);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:14px;max-width:960px}
+.due-h{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .due-h b{font-size:16px}
 .due-row{display:flex;gap:12px;align-items:flex-start}
 .due-row .num{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:var(--warm-soft);color:var(--warm-text);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -157,7 +157,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
 /* ===== 반응형 ===== */
 @media (max-width:1100px){
-  .hero .wrap,.news-cal,.contact{flex-direction:column;align-items:stretch}
+  .hero-top,.news-cal,.contact{flex-direction:column;align-items:stretch}
   .hero-r,.cal{width:auto}
   .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid5{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -184,13 +184,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
 <header>
   <div class="wrap hd">
-    <div class="brand"><b>Seller Promo Desk</b><span>G마켓·옥션 가구/리빙 셀러 안내</span></div>
+    <div class="brand"><b>리빙레저 셀러공지</b></div>
     <nav aria-label="주요 메뉴">
       <a href="#promo">진행 중 프로모션</a>
       <a href="#calendar">판매 캘린더</a>
       <a href="#notice">공지사항</a>
       <a href="#guide">판매 가이드</a>
-      <a href="#contact">참여 문의</a>
     </nav>
     <div class="btns">
       <a class="btn btn-line" href="https://www.esmplus.com" target="_blank" rel="noopener">ESM+ 바로가기</a>
@@ -203,16 +202,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <!-- 이번 주 핵심 -->
 <div class="hero">
   <div class="wrap">
+   <div class="hero-top">
     <div class="hero-l">
       <small>2026.09.28(월) 업데이트 · 오늘 꼭 챙겨주세요!</small>
-      <h1>10월 월첫세일, 오늘 티저 오픈<br>메인은 10/1(목)부터 5일간</h1>
+      <h1>10월 월첫세일<br>10/1(목)부터 5일간</h1>
       <p>웹폼 참여 셀러 전 상품에 매일 ID당 3장, 당사 부담 5% 중복쿠폰(B2)이 발급됩니다. 카드사별 '오늘만 12%' 카드데이도 함께 진행돼요.</p>
       <div class="chips"><span>티저 9/28~9/30</span><span>메인 10/1~10/5</span><span>프로모션 수수료 2%</span></div>
-      <div class="due">
-        <div class="due-h"><span class="badge b-warm">오늘 마감</span><b>9/28(월) 오늘까지 접수해 주세요</b></div>
-        <div class="due-row"><span class="num">1</span><div><b>10월 월첫세일 화이트리스트 취합</b><span>주력 상품 기준가 예외 처리가 필요한 상품코드(G/A)를 담당 매니저 메일로 보내주세요. 오늘 이후에는 반영이 어렵습니다.</span></div></div>
-        <div class="due-row"><span class="num">2</span><div><b>이번 주 마감 · AI Product Ads ROAS 보상 (9/30 수)</b><span>대상 셀러는 9월 판매예치금 10만원 이상 사용 조건을 꼭 확인해 주세요.</span></div></div>
-      </div>
     </div>
     <div class="hero-r">
       <div class="top">메인 오픈까지 <span class="badge b-warm">D-3</span></div>
@@ -222,6 +217,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
         <div><span>매일 카드</span><b>7%</b><em>최대 2만원</em></div>
       </div>
       <p>메인 기간 쿠폰과 카드 할인은 웹폼 참여 셀러 상품에 별도 세팅 없이 자동 적용됩니다.</p>
+    </div>
+   </div>
+    <div class="due">
+      <div class="due-h"><span class="badge b-warm">오늘 마감</span><b>9/28(월) 오늘까지 접수해 주세요</b></div>
+      <div class="due-row"><span class="num">1</span><div><b>10월 월첫세일 화이트리스트 취합</b><span>주력 상품 기준가 예외 처리가 필요한 상품코드(G/A)를 담당 매니저 메일로 보내주세요. 오늘 이후에는 반영이 어렵습니다.</span></div></div>
+      <div class="due-row"><span class="num">2</span><div><b>이번 주 마감 · AI Product Ads ROAS 보상 (9/30 수)</b><span>대상 셀러는 9월 판매예치금 10만원 이상 사용 조건을 꼭 확인해 주세요.</span></div></div>
     </div>
   </div>
 </div>
