@@ -66,6 +66,14 @@ section{padding:48px 0 16px}
 .stat3 b{font-size:22px}
 .stat3 em{font-style:normal;font-size:12px;color:var(--muted)}
 .hero-r p{font-size:13px;line-height:1.6;color:var(--muted)}
+.due{margin-top:8px;background:#fff;border:2px solid var(--warm);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:14px;max-width:720px}
+.due-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.due-h b{font-size:16px}
+.due-row{display:flex;gap:12px;align-items:flex-start}
+.due-row .num{width:24px;height:24px;flex-shrink:0;border-radius:50%;background:var(--warm-soft);color:var(--warm-text);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.due-row div{display:flex;flex-direction:column;gap:2px}
+.due-row b{font-size:15px}
+.due-row span:not(.num){font-size:14px;line-height:1.6;color:var(--text)}
 
 /* ===== 새소식 + 캘린더 ===== */
 .news-cal{display:flex;gap:24px;align-items:stretch}
@@ -138,7 +146,12 @@ section{padding:48px 0 16px}
 .contact h2{font-size:26px;color:#fff}
 .contact p{font-size:15px;line-height:1.7;color:#c9d1de}
 .contact .meta{display:flex;gap:24px;flex-wrap:wrap;font-size:14px;color:#fff}
-.mail{min-height:52px;padding:0 24px;background:#fff;border-radius:10px;display:inline-flex;align-items:center;font-size:16px;font-weight:700;color:var(--ink);flex-shrink:0}
+.cinfo{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.cinfo div{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:14px 20px}
+.cinfo span{width:64px;font-size:13px;font-weight:600;color:#c9d1de}
+.cinfo b{font-size:16px;color:#fff}
+.mails{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.mail{min-height:52px;justify-content:center;padding:0 24px;background:#fff;border-radius:10px;display:inline-flex;align-items:center;font-size:16px;font-weight:700;color:var(--ink);flex-shrink:0}
 footer{margin-top:56px;padding:28px 0;border-top:1px solid var(--line);background:#fff}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 
@@ -181,7 +194,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     </nav>
     <div class="btns">
       <a class="btn btn-line" href="https://www.esmplus.com" target="_blank" rel="noopener">ESM+ 바로가기</a>
-      <a class="btn btn-fill" href="mailto:seohhong@gmarket.com">행사 제안하기</a>
+      <a class="btn btn-line" href="https://docs.google.com/spreadsheets/d/186LLKpFwQpq4KZ2mxGcGJoFLtUcmDJ7BPpoKbMlmrCA/export?format=xlsx" target="_blank" rel="noopener">제안양식 다운로드</a>
+      <a class="btn btn-fill" href="mailto:seohhong@gmarket.com" target="_top">문의 및 행사 제안하기</a>
     </div>
   </div>
 </header>
@@ -190,10 +204,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <div class="hero">
   <div class="wrap">
     <div class="hero-l">
-      <small>2026.09.28(월) 업데이트 · 이번 주 핵심</small>
+      <small>2026.09.28(월) 업데이트 · 오늘 꼭 챙겨주세요!</small>
       <h1>10월 월첫세일, 오늘 티저 오픈<br>메인은 10/1(목)부터 5일간</h1>
       <p>웹폼 참여 셀러 전 상품에 매일 ID당 3장, 당사 부담 5% 중복쿠폰(B2)이 발급됩니다. 카드사별 '오늘만 12%' 카드데이도 함께 진행돼요.</p>
       <div class="chips"><span>티저 9/28~9/30</span><span>메인 10/1~10/5</span><span>프로모션 수수료 2%</span></div>
+      <div class="due">
+        <div class="due-h"><span class="badge b-warm">오늘 마감</span><b>9/28(월) 오늘까지 접수해 주세요</b></div>
+        <div class="due-row"><span class="num">1</span><div><b>10월 월첫세일 화이트리스트 취합</b><span>주력 상품 기준가 예외 처리가 필요한 상품코드(G/A)를 담당 매니저 메일로 보내주세요. 오늘 이후에는 반영이 어렵습니다.</span></div></div>
+        <div class="due-row"><span class="num">2</span><div><b>이번 주 마감 · AI Product Ads ROAS 보상 (9/30 수)</b><span>대상 셀러는 9월 판매예치금 10만원 이상 사용 조건을 꼭 확인해 주세요.</span></div></div>
+      </div>
     </div>
     <div class="hero-r">
       <div class="top">메인 오픈까지 <span class="badge b-warm">D-3</span></div>
@@ -202,7 +221,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
         <div><span>카드데이</span><b>12%</b><em>일자별 카드사</em></div>
         <div><span>매일 카드</span><b>7%</b><em>최대 2만원</em></div>
       </div>
-      <p>화이트리스트 취합은 오늘(9/28)까지입니다. 주력 상품 예외 처리가 필요하면 담당 MD에게 바로 알려주세요.</p>
+      <p>메인 기간 쿠폰과 카드 할인은 웹폼 참여 셀러 상품에 별도 세팅 없이 자동 적용됩니다.</p>
     </div>
   </div>
 </div>
@@ -398,11 +417,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <!-- 문의 -->
     <div class="contact" id="contact">
       <div class="l">
-        <h2>행사 참여·노출 제안은 담당 MD에게</h2>
-        <p>행사 견적서(상품코드 G/A, 상품명, 정상가, 행사가, 중복쿠폰 진행 여부·스펙)를 메일로 보내주세요. 슈퍼딜 배너는 692×360, 파일명은 상품코드로 저장해 주세요.</p>
-        <div class="meta"><span><b>취합 마감</b> 프로모션 오픈 2주 전 금요일</span><span><b>중복쿠폰·아이템쿠폰 세팅</b> 담당 MD 요청</span></div>
+        <h2>담당 매니저 contact point</h2>
+        <p>궁금하신 점 편하게 연락주세요</p>
       </div>
-      <a class="mail" href="mailto:seohhong@gmarket.com">seohhong@gmarket.com</a>
+      <div class="cinfo">
+        <div><span>MAIL</span><b>seohhong@gmarket.com</b></div>
+        <div><span>Nate on</span><b>hhh0252@nate.com</b></div>
+      </div>
     </div>
   </div>
 </section>
