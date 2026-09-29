@@ -172,6 +172,13 @@ section{padding:48px 0 16px}
 .cinfo span{width:64px;font-size:13px;font-weight:600;color:#c9d1de}
 .cinfo b{font-size:16px;color:#fff}
 .mails{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.cpick{display:flex;flex-direction:column;gap:10px;flex-shrink:0;min-width:420px}
+.cpick label{font-size:13px;font-weight:600;color:#c9d1de}
+.crow{display:flex;gap:10px}
+.crow select{flex:1;min-height:52px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 16px center;color:#fff;font:inherit;font-size:16px;font-weight:600;padding:0 44px 0 18px;appearance:none;-webkit-appearance:none;cursor:pointer}
+.crow select option{color:#111}
+.mail[disabled]{opacity:.45;cursor:not-allowed}
+.mail{border:0;cursor:pointer;font-family:inherit}
 .mail{min-height:52px;justify-content:center;padding:0 24px;background:#fff;border-radius:10px;display:inline-flex;align-items:center;font-size:16px;font-weight:700;color:var(--ink);flex-shrink:0}
 footer{margin-top:56px;padding:28px 0;border-top:1px solid var(--line);background:#fff}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
@@ -197,6 +204,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   .allin .dl{align-self:flex-start}
   .card{padding:20px}
   .contact{padding:28px 22px}
+  .cpick{min-width:0}
+  .crow{flex-direction:column}
   .mail{font-size:15px}
   .d{height:48px}
 }
@@ -217,7 +226,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <div class="btns">
       <a class="btn btn-line" href="https://www.esmplus.com" target="_blank" rel="noopener">ESM+ 바로가기</a>
       <a class="btn btn-line" href="%EC%A7%80%EB%A7%88%EC%BC%93%20%EC%98%A5%EC%85%98%20%ED%96%89%EC%82%AC%EC%A0%9C%EC%95%88%EC%84%9C.xlsx" download="지마켓 옥션 행사제안서.xlsx">제안양식 다운로드</a>
-      <a class="btn btn-fill" href="mailto:seohhong@gmarket.com" target="_top">문의 및 행사 제안하기</a>
+      <a class="btn btn-fill" href="#contact">문의 및 행사 제안하기</a>
     </div>
   </div>
 </header>
@@ -507,6 +516,26 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       </div>
     </div>
 
+    <!-- 문의 -->
+    <div class="contact" id="contact">
+      <div class="l">
+        <h2>담당 매니저 contact point</h2>
+        <p>궁금하신 점 편하게 연락주세요.<br>담당 매니저를 선택하시면 바로 메일을 보내실 수 있습니다.</p>
+      </div>
+      <div class="cpick">
+        <label for="mgrSel">담당 매니저</label>
+        <div class="crow">
+          <select id="mgrSel">
+            <option value="">매니저를 선택해 주세요</option>
+            <option value="hsh">홍서하 매니저</option>
+            <option value="wjk">원주경 매니저</option>
+            <option value="ytm">윤태민 매니저</option>
+          </select>
+          <button type="button" class="mail" id="mgrMail" disabled>메일 보내기</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -574,6 +603,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       box.querySelector('[data-due-title]').textContent=dueToday?md(today)+' 오늘까지 접수해 주세요':'마감일 전에 꼭 챙겨주세요';
     }
   }
+})();
+</script>
+<script>
+/* 담당 매니저 메일 연결 — 주소는 화면/HTML에 노출하지 않고 클릭 시에만 조합 */
+(function(){
+  var M={hsh:['seohhong'],wjk:['jwon'],ytm:['taeminyun']};
+  var dm=['gmarket','com'].join('.');
+  var sel=document.getElementById('mgrSel'),btn=document.getElementById('mgrMail');
+  if(!sel||!btn)return;
+  sel.addEventListener('change',function(){btn.disabled=!M[sel.value];});
+  btn.addEventListener('click',function(){
+    var k=M[sel.value];if(!k)return;
+    var subj=encodeURIComponent('[셀러 문의] ');
+    window.top.location.href='mai'+'lto:'+k[0]+'@'+dm+'?subject='+subj;
+  });
 })();
 </script>
 </body>
