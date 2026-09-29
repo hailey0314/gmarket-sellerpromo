@@ -175,6 +175,15 @@ section{padding:48px 0 16px}
 .cpick{display:flex;flex-direction:column;gap:10px;flex-shrink:0;min-width:420px}
 .cpick label{font-size:13px;font-weight:600;color:#c9d1de}
 .crow{display:flex;gap:10px}
+.cpick input{min-height:52px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:16px;font-weight:600;padding:0 18px;outline:none}
+.cpick input::placeholder{color:#8f9bb0;font-weight:500}
+.cpick input:focus{border-color:#fff}
+.cres{display:flex;flex-wrap:wrap;gap:8px;min-height:38px;align-items:center}
+.cres .hint{font-size:13px;color:#8f9bb0}
+.cres button{border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:999px;padding:8px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.cres button.on{background:#fff;color:var(--ink);border-color:#fff}
+.csel{flex:1;min-height:52px;display:flex;align-items:center;padding:0 18px;border-radius:10px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.25);font-size:15px;color:#8f9bb0}
+.csel.ok{color:#fff;font-weight:700;border-style:solid}
 .crow select{flex:1;min-height:52px;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 16px center;color:#fff;font:inherit;font-size:16px;font-weight:600;padding:0 44px 0 18px;appearance:none;-webkit-appearance:none;cursor:pointer}
 .crow select option{color:#111}
 .mail[disabled]{opacity:.45;cursor:not-allowed}
@@ -520,17 +529,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <div class="contact" id="contact">
       <div class="l">
         <h2>담당 매니저 contact point</h2>
-        <p>궁금하신 점 편하게 연락주세요.<br>담당 매니저를 선택하시면 바로 메일을 보내실 수 있습니다.</p>
+        <p>궁금하신 점 편하게 연락주세요.<br>담당 매니저를 검색해 선택하시면 바로 메일을 보내실 수 있습니다.</p>
       </div>
       <div class="cpick">
-        <label for="mgrSel">담당 매니저</label>
+        <label for="mgrQ">담당 매니저 이름을 검색해주세요</label>
+        <input id="mgrQ" type="search" placeholder="예) 홍서하" autocomplete="off">
+        <div class="cres" id="mgrRes"><span class="hint">이름 일부만 입력해도 검색됩니다</span></div>
         <div class="crow">
-          <select id="mgrSel">
-            <option value="">매니저를 선택해 주세요</option>
-            <option value="hsh">홍서하 매니저</option>
-            <option value="wjk">원주경 매니저</option>
-            <option value="ytm">윤태민 매니저</option>
-          </select>
+          <div class="csel" id="mgrPick">선택된 매니저 없음</div>
           <button type="button" class="mail" id="mgrMail" disabled>메일 보내기</button>
         </div>
       </div>
@@ -606,17 +612,36 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 })();
 </script>
 <script>
-/* 담당 매니저 메일 연결 — 주소는 화면/HTML에 노출하지 않고 클릭 시에만 조합 */
+/* 담당 매니저 검색 → 선택 → 메일 (주소는 화면/HTML에 노출하지 않고 클릭 시에만 조합) */
 (function(){
-  var M={hsh:['seohhong'],wjk:['jwon'],ytm:['taeminyun']};
+  var L=[['홍서하','seohhong'],['원주경','jwon'],['윤태민','taeminyun']];  // 매니저 추가 시 여기에 [이름, 메일ID]
   var dm=['gmarket','com'].join('.');
-  var sel=document.getElementById('mgrSel'),btn=document.getElementById('mgrMail');
-  if(!sel||!btn)return;
-  sel.addEventListener('change',function(){btn.disabled=!M[sel.value];});
+  var q=document.getElementById('mgrQ'),res=document.getElementById('mgrRes'),
+      pick=document.getElementById('mgrPick'),btn=document.getElementById('mgrMail');
+  if(!q)return;
+  var cur=null;
+  function sel(m){
+    cur=m;btn.disabled=!m;
+    pick.textContent=m?m[0]+' 매니저 선택됨':'선택된 매니저 없음';
+    pick.classList.toggle('ok',!!m);
+    [].forEach.call(res.querySelectorAll('button'),function(b){b.classList.toggle('on',!!m&&b.textContent.indexOf(m[0])===0);});
+  }
+  function render(){
+    var v=q.value.replace(/\s/g,'');res.innerHTML='';
+    if(!v){res.innerHTML='<span class="hint">이름 일부만 입력해도 검색됩니다</span>';sel(null);return;}
+    var hit=L.filter(function(m){return m[0].indexOf(v)>-1;});
+    if(!hit.length){res.innerHTML='<span class="hint">검색 결과가 없습니다</span>';sel(null);return;}
+    hit.forEach(function(m){
+      var b=document.createElement('button');b.type='button';b.textContent=m[0]+' 매니저';
+      b.onclick=function(){sel(m);};res.appendChild(b);
+    });
+    sel(hit.length===1?hit[0]:(cur&&hit.indexOf(cur)>-1?cur:null));
+  }
+  q.addEventListener('input',render);
+  q.addEventListener('keydown',function(e){if(e.key==='Enter'&&cur){e.preventDefault();btn.click();}});
   btn.addEventListener('click',function(){
-    var k=M[sel.value];if(!k)return;
-    var subj=encodeURIComponent('[셀러 문의] ');
-    window.top.location.href='mai'+'lto:'+k[0]+'@'+dm+'?subject='+subj;
+    if(!cur)return;
+    window.top.location.href='mai'+'lto:'+cur[1]+'@'+dm+'?subject='+encodeURIComponent('[셀러 문의] ');
   });
 })();
 </script>
