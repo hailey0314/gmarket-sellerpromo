@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>셀러 프로모션·공지 안내 | 가구/리빙</title>
+<title>지마켓/옥션 셀러공지</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
@@ -116,6 +116,12 @@ section{padding:48px 0 16px}
 .fee span{font-size:13px;color:var(--muted)} .fee b{font-size:20px}
 .step{padding:16px;border-radius:10px;border:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
 .step span{font-size:13px;color:var(--muted)} .step b{font-size:15px;font-weight:600}
+.form-link{color:inherit;text-decoration:none}
+.form-link .form-cta{display:none;font-style:normal;font-size:12px;font-weight:700;color:var(--accent);margin-top:2px}
+.form-link.live{border:2px solid var(--accent);background:var(--accent-soft);cursor:pointer}
+.form-link.live .form-cta{display:block}
+.form-link.live:hover{background:var(--accent-mid);text-decoration:none}
+.form-link.closed{pointer-events:none;cursor:default}
 .step.hot{border:2px solid var(--warm);background:var(--warm-soft)} .step.hot span{color:var(--warm-text)}
 .step.now{background:var(--accent);border-color:var(--accent)} .step.now span{color:var(--accent-mid)} .step.now b{color:#fff}
 .cp{background:var(--bg);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px}
@@ -134,7 +140,13 @@ section{padding:48px 0 16px}
 .pc p{font-size:14px;line-height:1.6;color:var(--text)}
 .pc .dl{align-self:flex-start;margin-top:auto}
 .pc .dl:hover{text-decoration:none}
-.fine{margin-top:14px;font-size:13px;color:var(--muted)}
+.fine{margin:0;font-size:13px;color:var(--muted)}
+.allin .soft{background:#fff}
+.allin .dl{flex-shrink:0;align-self:center}
+.allin .dl:hover{text-decoration:none}
+.kpi{display:flex;align-items:baseline;gap:10px}
+.kpi b{font-size:32px;color:var(--accent)}
+.kpi span{font-size:13px;color:var(--text)}
 
 /* ===== 가이드 ===== */
 .gd{padding:26px;display:flex;flex-direction:column;gap:12px}
@@ -178,6 +190,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   .grid3,.grid5{grid-template-columns:1fr}
   .big{padding:22px}
   .big-top{flex-direction:column}
+  .allin .dl{align-self:flex-start}
   .card{padding:20px}
   .contact{padding:28px 22px}
   .mail{font-size:15px}
@@ -199,7 +212,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     </nav>
     <div class="btns">
       <a class="btn btn-line" href="https://www.esmplus.com" target="_blank" rel="noopener">ESM+ 바로가기</a>
-      <a class="btn btn-line" href="estimate-form.xlsx" download="지마켓 옥션 행사 견적서.xlsx">제안양식 다운로드</a>
+      <a class="btn btn-line" href="%EC%A7%80%EB%A7%88%EC%BC%93%20%EC%98%A5%EC%85%98%20%ED%96%89%EC%82%AC%EC%A0%9C%EC%95%88%EC%84%9C.xlsx" download="지마켓 옥션 행사제안서.xlsx">제안양식 다운로드</a>
       <a class="btn btn-fill" href="mailto:seohhong@gmarket.com" target="_top">문의 및 행사 제안하기</a>
     </div>
   </div>
@@ -250,7 +263,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
       <div class="grid5">
         <div class="step"><span>가격 모니터링</span><b>8/6(목) ~ 8/25(화)</b></div>
-        <div class="step"><span>웹폼 신청</span><b>9/17(목) ~ 9/23(수)</b></div>
+        <a class="step form-link" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-09-17" data-form-end="2026-09-23"><span>웹폼 신청</span><b>9/17(목) ~ 9/23(수)</b><em class="form-cta">ESM+에서 신청하기 →</em></a>
         <div class="step hot" data-hot-until="2026-09-28"><span>화이트리스트 취합</span><b>9/17(목) ~ 9/28(월)</b></div>
         <div class="step"><span>티저</span><b>9/28(월) ~ 9/30(수)</b></div>
         <div class="step now"><span>메인</span><b>10/1(목) ~ 10/5(월)</b></div>
@@ -332,42 +345,45 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <section id="growth">
   <div class="wrap">
     <div class="sec-title"><h2>매출 성장을 하고 싶은 셀러분들께 추천드립니다</h2><span>올인(ALL-IN) PKG · 2026.09 상품소개서 기준</span></div>
-    <div class="grid3">
-      <article class="card pc">
-        <div><span class="badge b-blue">최상위 브랜드 단독</span></div>
-        <h3>올인(ALL-IN) PKG<br>단 하루, 전사 노출 집중</h3>
-        <p>G마켓 홈·G라이브·AI CRM·푸시 등 내/외부 주요 노출 지면을 하루 동안 한 브랜드에 집중하는 프리미엄 프로모션입니다.</p>
-        <div class="soft">
-          <span><b>대상</b> 전략적 파트너십(JBP) 체결 브랜드, 하루 1개사 단독</span>
-          <span><b>홈 클릭</b> 올인 당일 홈 영역 30만 회 (26년 하반기 기준)</span>
-          <span><b>성과 리포트</b> 행사 후 1개월 내 전용 Post-Report 제공 (PV·IPV·CVR, 신규/기존 고객)</span>
-          <span><b>일정</b> 집행 1년~6개월 전 스케줄 협의, 1개월 전 지면 확정</span>
+    <article class="card big allin">
+      <div class="big-top">
+        <div class="l">
+          <div><span class="badge b-blue">최상위 브랜드 단독</span></div>
+          <h3>올인(ALL-IN) PKG — 단 하루, 전사 노출 집중</h3>
+          <p>G마켓 홈·G라이브·AI CRM·푸시 등 내/외부 주요 노출 지면을 하루 동안 한 브랜드에 집중하는 프리미엄 프로모션입니다. 행사 후 전용 성과 리포트까지 제공합니다.</p>
         </div>
         <a class="btn btn-fill dl" href="allin-pkg.pdf" download="G마켓_올인PKG_상품소개서.pdf">상품소개서 PDF 다운로드</a>
-      </article>
-      <article class="card pc">
-        <div><span class="badge b-green">운영 성과</span></div>
-        <h3>연중 최고 매출일 대비<br>평균 5.9배, 최대 21배</h3>
-        <p>25-26년 올인 기준, 브랜드가 그해 기록한 단일일 최고 매출일(Peak Day)과 비교한 수치입니다.</p>
-        <div class="soft">
-          <span><b>매출(GMV)</b> 평균 5.9배 · 최대 21배</span>
-          <span><b>구매고객</b> 6.4배 · <b>주문건수</b> 7.0배 · <b>상품페이지뷰</b> 8.6배</span>
-          <span><b>26년 올인 평균</b> 전년 동요일 대비 매출 76배 (25년 16배)</span>
+      </div>
+      <div class="grid3">
+        <div class="cp">
+          <div class="h"><b>참여 안내</b></div>
+          <div class="soft">
+            <span><b>대상</b> 전략적 파트너십(JBP) 체결 브랜드, 하루 1개사 단독</span>
+            <span><b>홈 클릭</b> 올인 당일 홈 영역 30만 회 (26년 하반기 기준)</span>
+            <span><b>성과 리포트</b> 행사 후 1개월 내 전용 Post-Report (PV·IPV·CVR, 신규/기존 고객)</span>
+            <span><b>일정</b> 집행 1년~6개월 전 스케줄 협의, 1개월 전 지면 확정</span>
+          </div>
         </div>
-      </article>
-      <article class="card pc">
-        <div><span class="badge b-gray">노출 지면 · 준비 사항</span></div>
-        <h3>메인 홈부터<br>딜·라이브·CRM까지</h3>
-        <p>유입부터 구매 전환까지 고객 접점 전반을 한 번에 지원합니다.</p>
-        <div class="soft">
-          <span><b>메인 홈</b> 와이드배너, 스마일홈, 앱스플래시, G보드, 풀스크린DA, KBA 키워드 등</span>
-          <span><b>딜 &amp; 라이브</b> 슈퍼딜·타임딜 코너, 브랜드딜 모듈, G라이브 제작방송</span>
-          <span><b>CRM</b> AI CRM 최대 200만 명, 카카오 플친 30만 명, 앱푸시, LMS</span>
-          <span><b>셀러 준비</b> 브랜드 SNS 홍보, SKU·재고 확보, 당일 최저가·단독 구성</span>
+        <div class="cp">
+          <div class="h"><b>운영 성과</b><span>연중 최고 매출일 대비</span></div>
+          <div class="kpi"><b>5.9배</b><span>매출(GMV) 평균 · 최대 21배</span></div>
+          <div class="soft">
+            <span><b>구매고객</b> 6.4배 · <b>주문건수</b> 7.0배 · <b>상품페이지뷰</b> 8.6배</span>
+            <span><b>26년 올인 평균</b> 전년 동요일 대비 매출 76배 (25년 16배)</span>
+          </div>
         </div>
-      </article>
-    </div>
-    <p class="fine">※ 노출 지면·구성·단가는 내부 사정에 따라 변경될 수 있으며, 노출량은 보장되지 않습니다.</p>
+        <div class="cp">
+          <div class="h"><b>노출 지면 · 준비 사항</b></div>
+          <div class="soft">
+            <span><b>메인 홈</b> 와이드배너, 스마일홈, 앱스플래시, G보드, 풀스크린DA, KBA 키워드 등</span>
+            <span><b>딜 &amp; 라이브</b> 슈퍼딜·타임딜 코너, 브랜드딜 모듈, G라이브 제작방송</span>
+            <span><b>CRM</b> AI CRM 최대 200만 명, 카카오 플친 30만 명, 앱푸시, LMS</span>
+            <span><b>셀러 준비</b> 브랜드 SNS 홍보, SKU·재고 확보, 당일 최저가·단독 구성</span>
+          </div>
+        </div>
+      </div>
+      <p class="fine">※ 노출 지면·구성·단가는 내부 사정에 따라 변경될 수 있으며, 노출량은 보장되지 않습니다.</p>
+    </article>
   </div>
 </section>
 
@@ -511,6 +527,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     var n=diff(e.dataset.date);
     if(n===0){e.classList.add('today');var i=e.querySelector('i');if(i)i.textContent=(i.textContent?i.textContent+'·':'')+'오늘';else e.insertAdjacentHTML('beforeend','<i>오늘</i>');}
     if(n<0)e.classList.add('off');
+  });
+  // 웹폼 신청 칸: 신청 기간 중에만 ESM+ 신청 페이지로 연결
+  $$('[data-form-start]').forEach(function(e){
+    var on=diff(e.dataset.formStart)<=0 && diff(e.dataset.formEnd)>=0;
+    if(on){e.classList.add('live');}
+    else{e.classList.add('closed');e.removeAttribute('href');e.setAttribute('aria-disabled','true');}
   });
   // 마감 박스: 지난 항목 숨김, 제목 자동 변경, 모두 지나면 박스 숨김
   var box=document.querySelector('[data-due-box]');
