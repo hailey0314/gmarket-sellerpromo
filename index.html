@@ -218,6 +218,114 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   .mail{font-size:15px}
   .d{height:48px}
 }
+
+/* ===== 모바일 (갤럭시 폴드7 접었을 때 ≈412px 기준) ===== */
+@media (max-width:480px){
+  body{font-size:14px;-webkit-text-size-adjust:100%;word-break:keep-all;overflow-wrap:anywhere}
+  .wrap{padding:0 14px}
+  section{padding:36px 0 8px}
+  .sec-title{margin-bottom:16px}
+  .sec-title h2{font-size:21px}
+  .sec-title span{font-size:12px}
+  /* 헤더 : 고정 해제 + 한 줄 버튼 + 가로 스크롤 메뉴 */
+  header{position:static}
+  .hd{gap:10px;padding:12px 14px 0;min-height:0}
+  .dtag{white-space:nowrap;display:inline-block}
+  .brand b{font-size:20px}
+  .btns{width:100%;margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);gap:6px}
+  .btn{min-height:40px;padding:0 6px;font-size:12.5px;justify-content:center;white-space:nowrap;letter-spacing:-.2px}
+  nav{gap:18px;padding:4px 0 10px;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav a{font-size:14px}
+  /* 히어로 */
+  .hero{padding:24px 0 28px}
+  .hero-l{gap:12px}
+  .hero-l small{font-size:12.5px}
+  .hero-l h1{font-size:26px}
+  .hero-l p{font-size:14.5px}
+  .chips{gap:6px;padding-top:2px}
+  .chips span{padding:6px 11px;font-size:12.5px}
+  .hero-top{gap:20px}
+  .hero-r{padding:18px;gap:14px}
+  .stat3{gap:6px}
+  .stat3 div{padding:10px 8px}
+  .stat3 span{font-size:11.5px;white-space:nowrap}
+  .stat3 b{font-size:19px}
+  .stat3 em{font-size:11px}
+  .hero-r p{font-size:12px}
+  .due{margin-top:20px;padding:16px 14px;gap:12px}
+  .due-h{justify-content:flex-start}
+  .due-h b{font-size:15px}
+  .due-row b{font-size:14px}
+  .due-row span:not(.num){font-size:13px}
+  /* 카드 공통 */
+  .card{padding:16px;border-radius:14px}
+  .grid3{gap:12px}
+  .pc{gap:10px}
+  .pc h3{font-size:18px}
+  .pc p{font-size:13.5px}
+  .soft{padding:12px;font-size:13px;gap:5px}
+  .btn-fill.form-btn,.pc .dl{width:100%;justify-content:center}
+  /* 월첫세일 큰 카드 */
+  .big{padding:16px;gap:16px}
+  .big-top{gap:12px}
+  .big-top h3{font-size:22px}
+  .big-top p{font-size:13.5px}
+  .fee{padding:10px 14px;flex-direction:row;justify-content:space-between;align-items:center;align-self:stretch}
+  .fee b{font-size:17px}
+  .grid5{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .grid5 > :last-child:nth-child(odd){grid-column:1 / -1}
+  .step{padding:10px 12px;gap:2px}
+  .step span{font-size:12px} .step b{font-size:13.5px}
+  .cp{padding:14px;gap:9px}
+  .cp .h b{font-size:15.5px}
+  .cp .h span,.cp .sub{font-size:12px}
+  .kv{font-size:13.5px;flex-wrap:wrap;column-gap:8px;row-gap:0}
+  .kv b{margin-left:auto;text-align:right}
+  .kv.sm{font-size:13px;flex-direction:column;gap:0}
+  .kv.sm span+span{font-size:12px}
+  .cp .note{font-size:12px}
+  .cardday b.lbl{font-size:14px;margin-bottom:8px}
+  .cd{padding:9px 11px;gap:2px}
+  .cd span{font-size:12px} .cd em{font-size:12.5px}
+  /* 올인 PKG */
+  .allin .cp{padding:14px}
+  .allin .big-top h3{font-size:21px}
+  .allin .soft{padding:10px}
+  .kpi b{font-size:26px}
+  /* 새소식 + 캘린더 */
+  .news-cal{gap:12px}
+  .news .head,.cal .head{font-size:15px;padding-bottom:8px}
+  .news .head a{font-size:12.5px}
+  .row{gap:10px;padding:11px 0}
+  .tag{width:54px;font-size:11px}
+  .row .tit{font-size:13.5px}
+  .row .dt{font-size:11.5px}
+  .cal{gap:12px}
+  .month{gap:3px}
+  .d{height:46px;padding:4px 3px;font-size:12px;gap:1px;overflow:hidden;border-radius:6px}
+  .d i{font-size:8.5px;line-height:1.15;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:clip}
+  .d.today{border-width:1.5px}
+  .legend{gap:10px;font-size:11.5px}
+  /* 가이드 */
+  .gd{padding:16px;gap:9px}
+  .gd h3{font-size:16.5px}
+  .gd p{font-size:13.5px}
+  .gd .list{font-size:12.5px}
+  .links{font-size:13.5px}
+  /* 문의 */
+  .contact{margin-top:28px;padding:22px 16px;gap:18px;border-radius:16px}
+  .contact h2{font-size:20px}
+  .contact p{font-size:13.5px}
+  .cpick input,.csel,.mail{min-height:46px}
+  .cpick input{font-size:16px}
+  .csel{font-size:14px}
+  footer{margin-top:36px;padding:20px 0}
+  footer .wrap{font-size:12px}
+}
+@media (max-width:374px){
+  .btn{font-size:11.5px;padding:0 4px;letter-spacing:-.4px}
+}
 </style>
 </head>
 <body>
@@ -410,16 +518,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <span><b>손망실</b> 기존 재고 보상·CS 프로세스와 동일</span>
         </div>
         <a href="http://rpp.gmarket.co.kr/?exhib=272160" target="_blank" rel="noopener"><b>G마켓 기획전 보기</b></a>
-      </article>
-      <article class="card pc">
-        <div><span class="badge b-gray">종료</span></div>
-        <h3>한가위 빅세일<br>8/31(월) ~ 9/22(화)</h3>
-        <p>23일간 운영된 9월 대형 행사가 종료되었습니다. 다음 대형 행사 참여 기준 참고용으로 스펙을 남겨둡니다.</p>
-        <div class="soft">
-          <span><b>Mass B1</b> 12% 1원↑ 3천원 / 10% 5만원↑ 2만원 / 7% 20만원↑ 20만원</span>
-          <span><b>참여 조건</b> 최근 1년 판매 1건 이상 + 60일 최저가 이하 세팅가</span>
-          <span><b>수수료</b> 판매가의 2%</span>
-        </div>
       </article>
     </div>
   </div>
@@ -681,6 +779,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   btn.addEventListener('click',function(){
     if(!cur)return;
     window.top.location.href='mai'+'lto:'+cur[1]+'@'+dm+'?subject='+encodeURIComponent('[셀러 문의] ');
+  });
+})();
+/* 종료된 프로모션 카드 자동 숨김 (행사 종료일 다음 날부터) */
+(function(){
+  var n=new Date(Date.now()+9*3600e3),t=n.toISOString().slice(0,10);
+  [].forEach.call(document.querySelectorAll('.sub-cards article [data-end]'),function(el){
+    if(el.getAttribute('data-end')<t){var c=el.closest('article');if(c)c.style.display='none';}
   });
 })();
 </script>
