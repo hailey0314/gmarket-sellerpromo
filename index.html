@@ -326,6 +326,23 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 @media (max-width:374px){
   .btn{font-size:11.5px;padding:0 4px;letter-spacing:-.4px}
 }
+/* 지금 진행 중: 한 줄 요약 + 아코디언 */
+.now-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.now-list[hidden]{display:none}
+.now-row{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.now-row[open]{border-color:var(--accent-mid)}
+.now-row summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 18px;flex-wrap:wrap}
+.now-row summary::-webkit-details-marker{display:none}
+.now-row summary:hover{background:var(--bg)}
+.now-row summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.now-row .nm{font-size:16px;font-weight:700;color:var(--ink);flex:1;min-width:160px}
+.now-row .left{font-size:14px;font-weight:700;color:var(--warm-text);white-space:nowrap}
+.now-row .left.today{background:var(--warm);color:#fff;padding:3px 9px;border-radius:6px;font-size:13px}
+.now-row .chev{width:18px;height:18px;flex-shrink:0;color:var(--muted);transition:transform .2s}
+.now-row[open] .chev{transform:rotate(180deg)}
+.now-row .body{padding:0 18px 18px}
+.now-row .body>article{border:0;border-radius:0;padding:0;background:none}
+.now-row .body>article.pc>div:first-child,.now-row .body>article>h3,.now-row .body .big-top .l>div:first-child,.now-row .body .big-top .l>h3{display:none}
 </style>
 </head>
 <body>
@@ -380,6 +397,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <section id="promo">
   <div class="wrap">
     <div class="sec-title"><h2>진행 중 · 예정 프로모션</h2><span>행사 제안 취합 마감 : 각 프로모션 오픈 2주 전 금요일</span></div>
+    <div class="now-list" data-now-list hidden></div>
 
     <article class="card big">
       <div class="big-top">
@@ -787,6 +805,37 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   [].forEach.call(document.querySelectorAll('.sub-cards article [data-end]'),function(el){
     if(el.getAttribute('data-end')<t){var c=el.closest('article');if(c)c.style.display='none';}
   });
+})();
+</script>
+<script>
+/* 지금 진행 중인 프로모션: 섹션 제목 아래 한 줄(종료까지 남은 기간) + 펼치면 상세 */
+(function(){
+  var DAY=['일','월','화','수','목','금','토'];
+  var k=new Date(Date.now()+9*3600*1000);
+  var today=Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate());
+  function d(s){var p=s.split('-');return Date.UTC(+p[0],p[1]-1,+p[2]);}
+  function diff(s){return Math.round((d(s)-today)/864e5);}
+  function md(s){var x=new Date(d(s));return (x.getUTCMonth()+1)+'/'+x.getUTCDate()+'('+DAY[x.getUTCDay()]+')';}
+  var box=document.querySelector('[data-now-list]'); if(!box)return;
+  var items=[];
+  [].forEach.call(document.querySelectorAll('#promo article.card'),function(a){
+    var st=a.querySelector('[data-status][data-end]'); if(!st)return;
+    var s=st.dataset.start?diff(st.dataset.start):-1, t=diff(st.dataset.end);
+    if(s<=0&&t>=0)items.push({a:a,t:t,end:st.dataset.end});
+  });
+  if(!items.length)return;
+  items.sort(function(x,y){return x.t-y.t;});
+  items.forEach(function(it){
+    var h=it.a.querySelector('h3'), name=h?h.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,''):'';
+    var det=document.createElement('details');det.className='now-row';
+    det.innerHTML='<summary><span class="badge b-blue">진행 중</span><span class="nm"></span>'+
+      (it.t===0?'<span class="left today">오늘 종료</span>':'<span class="left">종료까지 D-'+it.t+' · '+md(it.end)+'</span>')+
+      '<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary><div class="body"></div>';
+    det.querySelector('.nm').innerHTML=name;
+    det.querySelector('.body').appendChild(it.a);
+    box.appendChild(det);
+  });
+  box.hidden=false;
 })();
 </script>
 </body>
