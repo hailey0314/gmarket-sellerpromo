@@ -118,12 +118,7 @@ section{padding:48px 0 16px}
 .dlmenu summary::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:-3px 0 0 4px}
 .dlmenu[open] summary::after{transform:rotate(-135deg);margin-top:3px}
 .dlmenu .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30;width:300px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(20,33,61,.16);padding:8px;display:flex;flex-direction:column;gap:2px}
-.dlmenu .mh{font-size:12px;color:var(--muted);padding:6px 10px 4px}
-.dlmenu .cn{display:flex;flex-direction:column;gap:4px;padding:4px 10px 8px;font-size:12px;font-weight:700;color:var(--ink)}
-.dlmenu .cn input{min-height:40px;border:1px solid #c9d1de;border-radius:8px;padding:0 12px;font:inherit;font-size:15px;font-weight:500;color:var(--ink)}
-.dlmenu .cn input:focus{outline:2px solid var(--accent);border-color:var(--accent)}
-.dlmenu .cn.need input{border-color:var(--warm);outline:2px solid var(--warm-soft)}
-.dlmenu .cn-msg{font-size:12px;color:var(--warm-text);padding:0 10px 6px}
+.dlmenu .mh{font-size:13px;line-height:1.5;color:var(--ink);padding:6px 10px 8px;border-bottom:1px solid var(--line2);margin-bottom:4px}
 .dlmenu .menu a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:700;color:var(--ink)}
 .dlmenu .menu a:hover{background:var(--accent-soft);text-decoration:none}
 .dlmenu .menu em{font-style:normal;font-size:12px;font-weight:400;color:var(--muted)}
@@ -394,13 +389,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <details class="dlmenu">
         <summary class="btn btn-line">제안양식 다운로드</summary>
         <div class="menu" role="menu">
-          <b class="mh">프로모션별 견적서 양식 (.xlsx)</b>
-          <label class="cn">업체명<input type="text" data-company placeholder="업체명을 입력해 주세요" autocomplete="organization"></label>
-          <span class="cn-msg" data-company-msg hidden>업체명을 입력하시면 "프로모션명_업체명" 파일로 받으실 수 있어요</span>
-          <a role="menuitem" href="quote-wolcheot.xlsx" download="월첫세일.xlsx" data-promo="월첫세일">월첫세일<em>10/1~10/5 · B2·B1 쿠폰 + 카드데이</em></a>
-          <a role="menuitem" href="quote-martliving.xlsx" download="SUPER 마트&amp;리빙.xlsx" data-promo="SUPER 마트&amp;리빙">SUPER 마트&amp;리빙<em>10/12~10/19 · B1 쿠폰 셀러 50% 분담</em></a>
-          <a role="menuitem" href="quote-monthly.xlsx" download="월간쇼!핑.xlsx" data-promo="월간쇼!핑">월간쇼!핑<em>10/20~10/23 · B1 15%·20% 반반 + 카드 12%</em></a>
-          <a role="menuitem" href="quote-regular.xlsx" download="상시.xlsx" data-promo="상시">상시<em>행사 외 기간 · B1 15%·20% 반반 기본</em></a>
+          <b class="mh">아래 프로모션명을 검색하시면<br>쿠폰스킴이 들어있는 견적서 다운이 가능합니다</b>
+          <a role="menuitem" href="quote-wolcheot.xlsx" download="월첫세일_업체명.xlsx">월첫세일<em>10/1~10/5 · B2·B1 쿠폰 + 카드데이</em></a>
+          <a role="menuitem" href="quote-martliving.xlsx" download="SUPER 마트&amp;리빙_업체명.xlsx">SUPER 마트&amp;리빙<em>10/12~10/19 · B1 쿠폰 셀러 50% 분담</em></a>
+          <a role="menuitem" href="quote-monthly.xlsx" download="월간쇼!핑_업체명.xlsx">월간쇼!핑<em>10/20~10/23 · B1 15%·20% 반반 + 카드 12%</em></a>
+          <a role="menuitem" href="quote-regular.xlsx" download="상시_업체명.xlsx">상시<em>행사 외 기간 · B1 15%·20% 반반 기본</em></a>
         </div>
       </details>
       <a class="btn btn-fill" href="#contact">문의 및 행사 제안하기</a>
@@ -448,7 +441,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <div><span class="badge b-blue" data-status data-start="2026-10-01" data-end="2026-10-05">진행 중</span> <span class="badge b-gray">전 카테고리 · 웹폼 참여 셀러</span></div>
           <h3>10월 월첫세일</h3>
           <p>웹폼 신청은 마감(9/17~9/23)되었습니다. 참여 셀러는 별도 세팅 없이 아래 쿠폰이 자동 적용됩니다.</p>
-          <a class="btn btn-line form-dl" href="quote-wolcheot.xlsx" download="월첫세일.xlsx" data-promo="월첫세일">월첫세일 제안양식 다운로드 (.xlsx)</a>
+          <a class="btn btn-line form-dl" href="quote-wolcheot.xlsx" download="월첫세일_업체명.xlsx">월첫세일 제안양식 다운로드 (.xlsx)</a>
         </div>
         <div class="fee"><span>프로모션 수수료</span><b>판매가의 2%</b></div>
       </div>
@@ -523,7 +516,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <span><b>카드 할인</b> 없음</span>
         </div>
         <a class="btn btn-fill form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-09-22" data-form-end="2026-10-06">ESM+에서 신청하기</a>
-        <a class="btn btn-line form-dl" href="quote-martliving.xlsx" download="SUPER 마트&amp;리빙.xlsx" data-promo="SUPER 마트&amp;리빙">마트&amp;리빙 제안양식 다운로드 (.xlsx)</a>
+        <a class="btn btn-line form-dl" href="quote-martliving.xlsx" download="SUPER 마트&amp;리빙_업체명.xlsx">마트&amp;리빙 제안양식 다운로드 (.xlsx)</a>
       </article>
       <article class="card pc">
         <div><span class="badge b-blue" data-status data-start="2026-10-20" data-end="2026-10-23">진행 중</span> <span class="badge b-gray">ESM+ 신청 프로모션</span></div>
@@ -538,7 +531,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <span><b>카드 할인</b> 1만원↑ 12% 최대 5천원 · 당사 21 : 셀러 50 : 카드 29</span>
         </div>
         <a class="btn btn-fill form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-10-07" data-form-end="2026-10-13">ESM+에서 신청하기</a>
-        <a class="btn btn-line form-dl" href="quote-monthly.xlsx" download="월간쇼!핑.xlsx" data-promo="월간쇼!핑">월간쇼!핑 제안양식 다운로드 (.xlsx)</a>
+        <a class="btn btn-line form-dl" href="quote-monthly.xlsx" download="월간쇼!핑_업체명.xlsx">월간쇼!핑 제안양식 다운로드 (.xlsx)</a>
       </article>
       <article class="card pc">
         <div><span class="badge b-blue" data-status data-start="2026-10-24" data-end="2026-11-01">진행 중</span> <span class="badge b-gray">카테고리 행사</span></div>
@@ -891,27 +884,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   document.addEventListener('click',function(e){ if(m.open && !m.contains(e.target)) m.open=false; });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') m.open=false; });
   [].forEach.call(m.querySelectorAll('.menu a'),function(a){ a.addEventListener('click',function(){ setTimeout(function(){m.open=false;},100); }); });
-})();
-</script>
-<script>
-/* 견적서 다운로드 : 파일명 = 프로모션명_업체명.xlsx (업체명은 메뉴 입력칸, 카드 버튼은 입력창으로 받음) */
-(function(){
-  var KEY='gsp_company', inp=document.querySelector('[data-company]'), msg=document.querySelector('[data-company-msg]');
-  function clean(v){ return (v||'').replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,' ').trim(); }
-  try{ if(inp) inp.value=localStorage.getItem(KEY)||''; }catch(e){}
-  function save(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
-  if(inp) inp.addEventListener('input',function(){ inp.parentNode.classList.remove('need'); if(msg) msg.hidden=true; });
-  [].forEach.call(document.querySelectorAll('a[data-promo]'),function(a){
-    a.addEventListener('click',function(e){
-      var inMenu=!!a.closest('.dlmenu'), name=clean(inMenu&&inp?inp.value:'');
-      if(!inMenu){ try{ name=clean(localStorage.getItem(KEY)); }catch(_){} if(!name) name=clean(window.prompt('업체명을 입력해 주세요 (파일명: 프로모션명_업체명)','')); }
-      if(!name){ e.preventDefault(); e.stopImmediatePropagation();
-        if(inMenu){ inp.parentNode.classList.add('need'); if(msg) msg.hidden=false; inp.focus(); }
-        return; }
-      save(name); if(inp) inp.value=name;
-      a.setAttribute('download', clean(a.getAttribute('data-promo').replace('&amp;','&'))+'_'+name+'.xlsx');
-    }, true);
-  });
 })();
 </script>
 </body>
