@@ -112,6 +112,19 @@ section{padding:48px 0 16px}
 .big-top .l{display:flex;flex-direction:column;gap:8px}
 .big-top h3{font-size:30px}
 .big-top p{font-size:15px;line-height:1.6;color:var(--text)}
+.dlmenu{position:relative}
+.dlmenu summary{list-style:none;cursor:pointer;gap:6px}
+.dlmenu summary::-webkit-details-marker{display:none}
+.dlmenu summary::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:-3px 0 0 4px}
+.dlmenu[open] summary::after{transform:rotate(-135deg);margin-top:3px}
+.dlmenu .menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30;width:300px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(20,33,61,.16);padding:8px;display:flex;flex-direction:column;gap:2px}
+.dlmenu .mh{font-size:12px;color:var(--muted);padding:6px 10px 4px}
+.dlmenu .menu a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:700;color:var(--ink)}
+.dlmenu .menu a:hover{background:var(--accent-soft);text-decoration:none}
+.dlmenu .menu em{font-style:normal;font-size:12px;font-weight:400;color:var(--muted)}
+.dlmenu .mf{font-size:11.5px;color:var(--muted);padding:6px 10px 4px;border-top:1px solid var(--line2);margin-top:4px}
+.form-dl{align-self:flex-start;margin-top:4px;background:#fff}
+.form-dl:hover{text-decoration:none}
 .fee{background:var(--bg);border-radius:10px;padding:14px 18px;display:flex;flex-direction:column;gap:4px;flex-shrink:0}
 .fee span{font-size:13px;color:var(--muted)} .fee b{font-size:20px}
 .step{padding:16px;border-radius:10px;border:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
@@ -193,6 +206,13 @@ footer{margin-top:56px;padding:28px 0;border-top:1px solid var(--line);backgroun
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 
 /* ===== 반응형 ===== */
+@media (min-width:1240px){
+  .hd{gap:24px;flex-wrap:nowrap}
+  nav{gap:20px}
+  nav a{font-size:14.5px;white-space:nowrap}
+  .btns{gap:8px;flex-shrink:0}
+  .btns .btn{padding:0 14px;white-space:nowrap}
+}
 @media (max-width:1100px){
   .hero-top,.news-cal,.contact{flex-direction:column;align-items:stretch}
   .hero-r,.cal{width:auto}
@@ -232,7 +252,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   .hd{gap:10px;padding:12px 14px 0;min-height:0}
   .dtag{white-space:nowrap;display:inline-block}
   .brand b{font-size:20px}
-  .btns{width:100%;margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);gap:6px}
+  .btns{width:100%;margin:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1.3fr);gap:6px}
+  .dlmenu summary{width:100%;height:100%}
+  .dlmenu summary::after{display:none}
+  .dlmenu .menu{position:fixed;left:14px;right:14px;top:auto;width:auto;margin-top:6px}
+  .d{height:52px}
+  .d i{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .pc > a:not(.btn),.links a,.news .head a{display:inline-block;padding:8px 0;margin:-8px 0}
+  .form-dl{align-self:stretch;justify-content:center}
   .btn{min-height:40px;padding:0 6px;font-size:12.5px;justify-content:center;white-space:nowrap;letter-spacing:-.2px}
   nav{gap:18px;padding:4px 0 10px;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
@@ -359,7 +386,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     </nav>
     <div class="btns">
       <a class="btn btn-line" href="https://www.esmplus.com" target="_blank" rel="noopener">ESM+ 바로가기</a>
-      <a class="btn btn-line" href="%EC%A7%80%EB%A7%88%EC%BC%93%20%EC%98%A5%EC%85%98%20%ED%96%89%EC%82%AC%EC%A0%9C%EC%95%88%EC%84%9C.xlsx" download="지마켓 옥션 행사제안서.xlsx">제안양식 다운로드</a>
+      <details class="dlmenu">
+        <summary class="btn btn-line">제안양식 다운로드</summary>
+        <div class="menu" role="menu">
+          <b class="mh">프로모션별 견적서 양식 (.xlsx)</b>
+          <a role="menuitem" href="quote-wolcheot.xlsx" download="지마켓 옥션 행사제안서_월첫세일.xlsx">월첫세일<em>10/1~10/5 · B2·B1 쿠폰 + 카드데이</em></a>
+          <a role="menuitem" href="quote-martliving.xlsx" download="지마켓 옥션 행사제안서_SUPER 마트&amp;리빙.xlsx">SUPER 마트&amp;리빙<em>10/12~10/19 · B1 쿠폰 셀러 50% 분담</em></a>
+          <a role="menuitem" href="quote-monthly.xlsx" download="지마켓 옥션 행사제안서_월간쇼핑.xlsx">월간쇼!핑<em>10/20~10/23 · 카드 12% (쿠폰 TBD)</em></a>
+          <a role="menuitem" href="quote-regular.xlsx" download="지마켓 옥션 행사제안서_상시.xlsx">상시<em>행사 외 기간 · 쿠폰/카드 스킴 직접 입력</em></a>
+          <p class="mf">양식 상단의 쿠폰·카드 표를 수정하면 아래 수식이 함께 바뀝니다.</p>
+        </div>
+      </details>
       <a class="btn btn-fill" href="#contact">문의 및 행사 제안하기</a>
     </div>
   </div>
@@ -405,6 +442,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <div><span class="badge b-blue" data-status data-start="2026-10-01" data-end="2026-10-05">진행 중</span> <span class="badge b-gray">전 카테고리 · 웹폼 참여 셀러</span></div>
           <h3>10월 월첫세일</h3>
           <p>웹폼 신청은 마감(9/17~9/23)되었습니다. 참여 셀러는 별도 세팅 없이 아래 쿠폰이 자동 적용됩니다.</p>
+          <a class="btn btn-line form-dl" href="quote-wolcheot.xlsx" download="지마켓 옥션 행사제안서_월첫세일.xlsx">월첫세일 제안양식 다운로드 (.xlsx)</a>
         </div>
         <div class="fee"><span>프로모션 수수료</span><b>판매가의 2%</b></div>
       </div>
@@ -476,9 +514,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <span><b>참여 수수료</b> 없음</span>
           <span><b>B1 쿠폰</b> 5천원↑ 15% 최대 3만원 / 12% 최대 2만원 / 10% 최대 2만원</span>
           <span><b>발급·분담</b> 매일 무제한 · 당사 50% : 셀러 50% (대상 카테고리 한정)</span>
-          <span><b>카드 할인</b> 미정 (확정 시 업데이트)</span>
+          <span><b>카드 할인</b> 없음</span>
         </div>
         <a class="btn btn-fill form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-09-22" data-form-end="2026-10-06">ESM+에서 신청하기</a>
+        <a class="btn btn-line form-dl" href="quote-martliving.xlsx" download="지마켓 옥션 행사제안서_SUPER 마트&amp;리빙.xlsx">마트&amp;리빙 제안양식 다운로드 (.xlsx)</a>
       </article>
       <article class="card pc">
         <div><span class="badge b-blue" data-status data-start="2026-10-20" data-end="2026-10-23">진행 중</span> <span class="badge b-gray">ESM+ 신청 프로모션</span></div>
@@ -493,6 +532,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <span><b>카드 할인</b> 1만원↑ 12% 최대 5천원 · 당사 21 : 셀러 50 : 카드 29</span>
         </div>
         <a class="btn btn-fill form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-10-07" data-form-end="2026-10-13">ESM+에서 신청하기</a>
+        <a class="btn btn-line form-dl" href="quote-monthly.xlsx" download="지마켓 옥션 행사제안서_월간쇼핑.xlsx">월간쇼!핑 제안양식 다운로드 (.xlsx)</a>
       </article>
       <article class="card pc">
         <div><span class="badge b-blue" data-status data-start="2026-10-24" data-end="2026-11-01">진행 중</span> <span class="badge b-gray">카테고리 행사</span></div>
@@ -836,6 +876,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     box.appendChild(det);
   });
   box.hidden=false;
+})();
+</script>
+<script>
+/* 제안양식 메뉴: 바깥 클릭·ESC·항목 선택 시 닫기 */
+(function(){
+  var m=document.querySelector('.dlmenu'); if(!m) return;
+  document.addEventListener('click',function(e){ if(m.open && !m.contains(e.target)) m.open=false; });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') m.open=false; });
+  [].forEach.call(m.querySelectorAll('.menu a'),function(a){ a.addEventListener('click',function(){ setTimeout(function(){m.open=false;},100); }); });
 })();
 </script>
 </body>
