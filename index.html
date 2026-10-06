@@ -419,7 +419,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   <div class="wrap">
    <div class="hero-top" data-hero data-start="2026-10-12" data-end="2026-10-19">
     <div class="hero-l">
-      <h1>10월 SUPER 마트&amp;리빙<br>10/12(월)부터 8일간</h1>
+      <h1>10월 SUPER 마트&amp;리빙</h1>
       <div class="chips"><span>옥션 10/12~10/19</span><span>G마켓 10/13~10/19</span><span>참여 수수료 없음</span></div>
       <a class="btn btn-fill hero-dl" href="quote-martliving.xlsx" download="SUPER 마트&amp;리빙_업체명.xlsx">마트&amp;리빙 제안양식 다운로드 (.xlsx)</a>
     </div>
@@ -435,7 +435,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
    </div>
    <div class="hero-top" data-hero data-start="2026-10-20" data-end="2026-10-23" style="display:none">
     <div class="hero-l">
-      <h1>10월 월간쇼!핑<br>10/20(화)부터 4일간</h1>
+      <h1>10월 월간쇼!핑</h1>
       <div class="chips"><span>신청 10/7~10/13</span><span>행사 10/20~10/23</span><span>참여 수수료 2%</span></div>
       <a class="btn btn-fill hero-dl" href="quote-monthly.xlsx" download="월간쇼!핑_업체명.xlsx">월간쇼!핑 제안양식 다운로드 (.xlsx)</a>
     </div>
@@ -450,7 +450,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     </div>
    </div>
     <div class="due" data-due-box>
-      <div class="due-h"><span class="badge b-warm" data-due-badge>오늘 마감</span><b data-due-title>9/28(월) 오늘까지 접수해 주세요</b></div>
+      <div class="due-h"><span class="badge b-warm" data-due-badge>오늘 마감</span><b data-due-title>마감 일정</b></div>
+      <div class="due-row" data-due="2026-10-07"><span class="num">1</span><div><b>판매자 스타배송 휴무일 설정 · 10/7(수)까지 <em class="dtag" data-dday="2026-10-07"></em></b><span>10/8(목)~10/11(일) 휴무일 설정 필요. 미설정 시 시스템 자동 설정, 발송 지연 시 페널티 부과 가능. ESM PLUS &gt; 스타배송 &gt; 판매자 스타배송 &gt; 스타배송 배송정보 관리 · <a href="https://www.esmplus.com/Home/v2/notice-detail?seq=36261" target="_blank" rel="noopener">공지 보기</a></span></div></div>
     </div>
   </div>
 </div>
@@ -582,6 +583,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <div class="news-cal">
       <div class="card news" id="notice">
         <div class="head">새소식 <a href="#guide">판매 가이드 전체보기</a></div>
+        <div class="row"><span class="tag t-warm" data-tag-end="2026-10-07">스타배송</span><span class="tit"><a href="https://www.esmplus.com/Home/v2/notice-detail?seq=36261" target="_blank" rel="noopener">10월 연휴 휴무일 설정 — 10/8~10/11, 10/7(수)까지 설정</a></span><span class="dt">09.30</span></div>
         <div class="row"><span class="tag t-blue">프로모션</span><span class="tit">10월 끝장세일 진행 (10/6~10/12) — 웹폼 신청 없음</span><span class="dt">10.06</span></div>
         <div class="row"><span class="tag t-blue">프로모션</span><span class="tit">10월 SUPER 마트&amp;리빙 쿠폰 확정 — 옥션 10/12 · G마켓 10/13 오픈</span><span class="dt">10.06</span></div>
         <div class="row"><span class="tag t-warm" data-tag-end="2026-10-13">신청</span><span class="tit">10월 월간쇼!핑 웹폼 신청 10/7~10/13</span><span class="dt">10.06</span></div>
@@ -755,7 +757,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     if(!live.length){box.style.display='none';}
     else{
       box.querySelector('[data-due-badge]').textContent=dueToday?'오늘 마감':'마감 임박';
-      box.querySelector('[data-due-title]').textContent=dueToday?md(today)+' 오늘까지 접수해 주세요':'마감일 전에 꼭 챙겨주세요';
+      box.querySelector('[data-due-title]').textContent=dueToday?md(today)+' 마감':'마감 일정';
     }
   }
 })();
