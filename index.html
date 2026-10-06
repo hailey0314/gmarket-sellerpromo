@@ -50,11 +50,11 @@ section{padding:48px 0 16px}
 .grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 
 /* ===== 히어로 ===== */
-.hero{background:#fbfcfe url(hero-bg.jpg) right bottom/auto 76% no-repeat;padding:56px 0}
-.hero .hero-top{display:grid;grid-template-columns:minmax(0,560px);gap:24px;align-items:start}
-.hero .hero-r{width:auto;background:rgba(255,255,255,.92);box-shadow:0 8px 28px rgba(20,33,61,.08)}
-@media (max-width:1100px){.hero{background-size:auto 320px;background-position:right top;padding-top:320px!important}}
-@media (max-width:720px){.hero{background-size:auto 250px;background-position:72% 0;padding-top:240px!important}}
+.hero{background:#fbfcfe;padding:56px 0}
+.hero .hero-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;align-items:center;background:url(hero-banner.jpg) right center/55% auto no-repeat;min-height:480px}
+.hero .hero-l,.hero .hero-r{grid-column:1}
+.hero .hero-r{width:auto;background:#fff;box-shadow:0 8px 28px rgba(20,33,61,.08)}
+@media (max-width:1100px){.hero .hero-top{grid-template-columns:minmax(0,1fr);background-position:center top;background-size:min(100%,640px) auto;padding-top:min(56vw,410px);min-height:0}}
 .hero-top{display:flex;gap:48px;align-items:center}
 .hero-l{flex:1;display:flex;flex-direction:column;gap:16px}
 .hero-l small{font-size:14px;font-weight:600;color:var(--accent)}
@@ -380,6 +380,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 .now-row .chev{width:18px;height:18px;flex-shrink:0;color:var(--muted);transition:transform .2s}
 .now-row[open] .chev{transform:rotate(180deg)}
 .now-row .body{padding:0 18px 18px}
+.now-row summary .u-tag{margin:0}
+.now-row.soon .left{color:var(--muted)}
 .now-row .body>article{border:0;border-radius:0;padding:0;background:none}
 .now-row .body>article.pc>div:first-child,.now-row .body>article>h3,.now-row .body .big-top .l>div:first-child,.now-row .body .big-top .l>h3{display:none}
 </style>
@@ -418,7 +420,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
    <div class="hero-top" data-hero data-start="2026-10-12" data-end="2026-10-19">
     <div class="hero-l">
       <h1>10월 SUPER 마트&amp;리빙<br>10/12(월)부터 8일간</h1>
-      <p>마트·리빙 대상 카테고리 B1 쿠폰 15%·12%·10% 매일 무제한 발급<br>옥션 10/12(월) 10시 · G마켓 10/13(화) 10시 오픈</p>
       <div class="chips"><span>옥션 10/12~10/19</span><span>G마켓 10/13~10/19</span><span>참여 수수료 없음</span></div>
       <a class="btn btn-fill hero-dl" href="quote-martliving.xlsx" download="SUPER 마트&amp;리빙_업체명.xlsx">마트&amp;리빙 제안양식 다운로드 (.xlsx)</a>
     </div>
@@ -435,7 +436,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
    <div class="hero-top" data-hero data-start="2026-10-20" data-end="2026-10-23" style="display:none">
     <div class="hero-l">
       <h1>10월 월간쇼!핑<br>10/20(화)부터 4일간</h1>
-      <p>웹폼 신청 10/7(수) 9시 ~ 10/13(화)<br>카드 결제 12% 할인 진행</p>
       <div class="chips"><span>신청 10/7~10/13</span><span>행사 10/20~10/23</span><span>참여 수수료 2%</span></div>
       <a class="btn btn-fill hero-dl" href="quote-monthly.xlsx" download="월간쇼!핑_업체명.xlsx">월간쇼!핑 제안양식 다운로드 (.xlsx)</a>
     </div>
@@ -800,31 +800,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     if(el.getAttribute('data-end')<t){var c=el.closest('article');if(c)c.style.display='none';}
   });
 })();
-/* 상단 자동 배치: ① 웹폼 신청 마감 7일 이내(신청 기간 중) ② 이슈 표시 카드(data-issue, data-issue-until까지) → 마감 빠른 순, 이슈는 그 다음 */
-(function(){
-  var DAYS=7;
-  var k=new Date(Date.now()+9*3600e3),today=Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate());
-  function diff(x){var p=x.split('-');return Math.round((Date.UTC(+p[0],p[1]-1,+p[2])-today)/864e5);}
-  var list=[];
-  [].forEach.call(document.querySelectorAll('.sub-cards > article'),function(a){
-    if(a.style.display==='none')return;
-    var b=a.querySelector('.form-btn[data-form-end]'), tag='', key=999;
-    if(b){var s=diff(b.dataset.formStart), t=diff(b.dataset.formEnd);
-      if(s<=0&&t>=0&&t<=DAYS){key=t; tag=t===0?'오늘 신청 마감':'신청 마감 D-'+t;}}
-    var is=a.dataset.issue, iu=a.dataset.issueUntil;
-    if(is&&(!iu||diff(iu)>=0)){tag=tag?tag+' · '+is:is; if(key===999)key=100;}
-    if(!tag)return;
-    var u=document.createElement('span');u.className='u-tag';u.textContent=tag;
-    a.insertBefore(u,a.firstChild);
-    list.push({a:a,t:key});
-  });
-  if(!list.length)return;
-  list.sort(function(x,y){return x.t-y.t;});
-  var w=document.createElement('div');w.className='urgent-wrap';
-  w.innerHTML='<h3 class="urgent-h">신청 마감 임박</h3><div class="grid3"></div>';
-  var g=w.querySelector('.grid3'); list.forEach(function(it){g.appendChild(it.a);});
-  var nl=document.querySelector('#promo [data-now-list]'); nl.parentNode.insertBefore(w,nl.nextSibling);
-})();
 /* 종료된 상단 큰 카드(월첫세일 등)도 종료일 다음 날부터 숨김 */
 (function(){
   var t=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
@@ -834,9 +809,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 })();
 </script>
 <script>
-/* 지금 진행 중인 프로모션: 섹션 제목 아래 한 줄(종료까지 남은 기간) + 펼치면 상세 */
+/* 프로모션 가로형 목록: 신청 마감 임박·이슈 → 진행 중(펼침) → 오픈 예정(접힘) */
 (function(){
-  var DAY=['일','월','화','수','목','금','토'];
+  var DAY=['일','월','화','수','목','금','토'], DAYS=7;
   var k=new Date(Date.now()+9*3600*1000);
   var today=Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate());
   function d(s){var p=s.split('-');return Date.UTC(+p[0],p[1]-1,+p[2]);}
@@ -845,20 +820,41 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   var box=document.querySelector('[data-now-list]'); if(!box)return;
   var items=[];
   [].forEach.call(document.querySelectorAll('#promo article.card'),function(a){
-    if(a.closest('.urgent-wrap')||a.style.display==='none')return;
+    if(a.style.display==='none')return;
     var st=a.querySelector('[data-status][data-end]'); if(!st)return;
     var s=st.dataset.start?diff(st.dataset.start):-1, t=diff(st.dataset.end);
-    if(s<=0&&t>=0)items.push({a:a,t:t,end:st.dataset.end});
+    if(t<0)return;
+    var tag='', uk=999, b=a.querySelector('.form-btn[data-form-end]');
+    if(b){var fs=diff(b.dataset.formStart), fe=diff(b.dataset.formEnd);
+      if(fs<=0&&fe>=0&&fe<=DAYS){uk=fe; tag=fe===0?'오늘 신청 마감':'신청 마감 D-'+fe;}}
+    var is=a.dataset.issue, iu=a.dataset.issueUntil;
+    if(is&&(!iu||diff(iu)>=0)){tag=tag?tag+' · '+is:is; if(uk===999)uk=100;}
+    var live=s<=0;
+    items.push({a:a,s:s,t:t,end:st.dataset.end,start:st.dataset.start,live:live,tag:tag,g:tag?0:(live?1:2),k:tag?uk:(live?t:s)});
   });
   if(!items.length)return;
-  items.sort(function(x,y){return x.t-y.t;});
+  items.sort(function(x,y){return x.g-y.g||x.k-y.k;});
+  /* 상시 운영 카드: 맨 아래 접힌 가로형 */
+  [].forEach.call(document.querySelectorAll('#promo .sub-cards > article.card'),function(a){
+    if(a.style.display==='none'||a.querySelector('[data-status]'))return;
+    var h=a.querySelector('h3'), name=h?h.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,''):'';
+    var det=document.createElement('details');det.className='now-row soon';
+    det.innerHTML='<summary><span class="badge b-green">상시 운영</span><span class="nm"></span><svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary><div class="body"></div>';
+    det.querySelector('.nm').innerHTML=name; det.querySelector('.body').appendChild(a);
+    items.push({det:det});
+  });
   items.forEach(function(it){
+    if(it.det){box.appendChild(it.det);return;}
     var h=it.a.querySelector('h3'), name=h?h.innerHTML.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,''):'';
-    var det=document.createElement('details');det.className='now-row';
-    det.innerHTML='<summary><span class="badge b-blue">진행 중</span><span class="nm"></span>'+
-      (it.t===0?'<span class="left today">오늘 종료</span>':'<span class="left">종료까지 D-'+it.t+' · '+md(it.end)+'</span>')+
+    var det=document.createElement('details');det.className='now-row'+(it.live?'':' soon');
+    if(it.live)det.open=true;
+    var badge=it.live?'<span class="badge b-blue">진행 중</span>':'<span class="badge b-warm">D-'+it.s+' 오픈 예정</span>';
+    var right=it.live?(it.t===0?'<span class="left today">오늘 종료</span>':'<span class="left">종료까지 D-'+it.t+' · '+md(it.end)+'</span>')
+                     :'<span class="left">'+md(it.start)+' 오픈</span>';
+    det.innerHTML='<summary>'+badge+'<span class="nm"></span>'+(it.tag?'<span class="u-tag"></span>':'')+right+
       '<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary><div class="body"></div>';
     det.querySelector('.nm').innerHTML=name;
+    if(it.tag)det.querySelector('.u-tag').textContent=it.tag;
     det.querySelector('.body').appendChild(it.a);
     box.appendChild(det);
   });
