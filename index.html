@@ -354,6 +354,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   .btn{font-size:11.5px;padding:0 4px;letter-spacing:-.4px}
 }
 /* 지금 진행 중: 한 줄 요약 + 아코디언 */
+.urgent-wrap{margin-bottom:24px}.urgent-wrap h3.urgent-h{font-size:15px;margin:0 0 10px;color:#c2410c}
+.urgent-wrap .card{border-color:#fdba74}.u-tag{display:inline-block;align-self:flex-start;margin:0 0 6px;padding:3px 9px;border-radius:6px;background:#fff7ed;color:#c2410c;font-size:13px;font-weight:700}
 .now-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
 .now-list[hidden]{display:none}
 .now-row{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -423,8 +425,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
    </div>
     <div class="due" data-due-box>
       <div class="due-h"><span class="badge b-warm" data-due-badge>오늘 마감</span><b data-due-title>9/28(월) 오늘까지 접수해 주세요</b></div>
-      <div class="due-row" data-due="2026-09-28"><span class="num">1</span><div><b>10월 월첫세일 화이트리스트 취합 <em class="dtag" data-dday="2026-09-28"></em></b><span>주력 상품 기준가 예외 처리가 필요한 상품코드(G/A)를 담당 매니저 메일로 보내주세요. 오늘 이후에는 반영이 어렵습니다.</span></div></div>
-      <div class="due-row" data-due="2026-09-30"><span class="num">2</span><div><b>AI Product Ads ROAS 보상 (9/30 수) <em class="dtag" data-dday="2026-09-30"></em></b><span>대상 셀러는 9월 판매예치금 10만원 이상 사용 조건을 꼭 확인해 주세요.</span></div></div>
     </div>
   </div>
 </div>
@@ -543,28 +543,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
           <span><b>행사 기간</b> 10/24(토) 10시 ~ 11/1(일)</span>
           <span><b>웹폼·수수료</b> TBD</span>
           <span><b>쿠폰·카드 할인</b> 없음</span>
-        </div>
-      </article>
-      <article class="card pc">
-        <div><span class="badge b-blue" data-status data-start="2026-09-28" data-end="2026-09-30">진행 중</span> <span class="badge b-gray">ESM+ 신청 프로모션</span></div>
-        <h3>9월 SUPER 마트&amp;리빙</h3>
-        <div class="soft">
-          <span><b>신청 기간</b> 9/14(월) ~ 9/21(월)</span>
-          <span><b>행사 기간</b> 9/28(월) ~ 9/30(수)</span>
-          <span><b>쿠폰 스킴</b> TBD</span>
-        </div>
-        <a class="btn btn-fill form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-09-14" data-form-end="2026-09-21">ESM+에서 신청하기</a>
-        <span class="src">출처 : <a href="https://partner.gmarket.com/181/?bmode=view&idx=174093086&t=board" target="_blank" rel="noopener">G마켓 파트너센터 판매캘린더</a></span>
-      </article>
-      <article class="card pc">
-        <div><span class="badge b-warm" data-status data-end="2026-09-30" data-label-end="9/30 종료">D-2 · 9/30 종료</span></div>
-        <h3>AI Product Ads<br>ROAS 300% 차액 보상</h3>
-        <p>8/5 기준 선정된 관리 셀러 대상. 월 판매예치금 기준 ROAS가 300% 미만이면 차액을 AI Product Ads 이머니로 지원합니다.</p>
-        <div class="soft">
-          <span><b>A 대상</b> 월 판매예치금 10만원 이상 + 매출 대비 SA 광고비 1% 이상</span>
-          <span><b>B 대상</b> 월 판매예치금 10만원 이상</span>
-          <span><b>지원금</b> 월 판매예치금 − (광고 GMV ÷ 3)</span>
-          <span><b>지급</b> 익월 10일 이머니 지급</span>
         </div>
       </article>
       <article class="card pc">
@@ -847,6 +825,38 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     if(el.getAttribute('data-end')<t){var c=el.closest('article');if(c)c.style.display='none';}
   });
 })();
+/* 상단 자동 배치: ① 웹폼 신청 마감 7일 이내(신청 기간 중) ② 이슈 표시 카드(data-issue, data-issue-until까지) → 마감 빠른 순, 이슈는 그 다음 */
+(function(){
+  var DAYS=7;
+  var k=new Date(Date.now()+9*3600e3),today=Date.UTC(k.getUTCFullYear(),k.getUTCMonth(),k.getUTCDate());
+  function diff(x){var p=x.split('-');return Math.round((Date.UTC(+p[0],p[1]-1,+p[2])-today)/864e5);}
+  var list=[];
+  [].forEach.call(document.querySelectorAll('.sub-cards > article'),function(a){
+    if(a.style.display==='none')return;
+    var b=a.querySelector('.form-btn[data-form-end]'), tag='', key=999;
+    if(b){var s=diff(b.dataset.formStart), t=diff(b.dataset.formEnd);
+      if(s<=0&&t>=0&&t<=DAYS){key=t; tag=t===0?'오늘 신청 마감':'신청 마감 D-'+t;}}
+    var is=a.dataset.issue, iu=a.dataset.issueUntil;
+    if(is&&(!iu||diff(iu)>=0)){tag=tag?tag+' · '+is:is; if(key===999)key=100;}
+    if(!tag)return;
+    var u=document.createElement('span');u.className='u-tag';u.textContent=tag;
+    a.insertBefore(u,a.firstChild);
+    list.push({a:a,t:key});
+  });
+  if(!list.length)return;
+  list.sort(function(x,y){return x.t-y.t;});
+  var w=document.createElement('div');w.className='urgent-wrap';
+  w.innerHTML='<h3 class="urgent-h">신청 마감 임박 · 확인 필요</h3><div class="grid3"></div>';
+  var g=w.querySelector('.grid3'); list.forEach(function(it){g.appendChild(it.a);});
+  var nl=document.querySelector('#promo [data-now-list]'); nl.parentNode.insertBefore(w,nl.nextSibling);
+})();
+/* 종료된 상단 큰 카드(월첫세일 등)도 종료일 다음 날부터 숨김 */
+(function(){
+  var t=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
+  [].forEach.call(document.querySelectorAll('#promo > .wrap > article.card.big'),function(a){
+    var st=a.querySelector('[data-status][data-end]'); if(st&&st.dataset.end<t)a.style.display='none';
+  });
+})();
 </script>
 <script>
 /* 지금 진행 중인 프로모션: 섹션 제목 아래 한 줄(종료까지 남은 기간) + 펼치면 상세 */
@@ -860,6 +870,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   var box=document.querySelector('[data-now-list]'); if(!box)return;
   var items=[];
   [].forEach.call(document.querySelectorAll('#promo article.card'),function(a){
+    if(a.closest('.urgent-wrap')||a.style.display==='none')return;
     var st=a.querySelector('[data-status][data-end]'); if(!st)return;
     var s=st.dataset.start?diff(st.dataset.start):-1, t=diff(st.dataset.end);
     if(s<=0&&t>=0)items.push({a:a,t:t,end:st.dataset.end});
