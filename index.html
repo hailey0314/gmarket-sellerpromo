@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>지마켓/옥션 셀러공지</title>
+<meta name="description" content="G마켓·옥션 진행 중·예정 프로모션, 쿠폰 스킴, 신청 기간, 제안양식, 캠페인 일정표">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="지마켓/옥션 셀러공지">
+<meta property="og:title" content="지마켓/옥션 셀러공지">
+<meta property="og:description" content="진행 중·예정 프로모션, 쿠폰 스킴, 신청 기간, 제안양식, 캠페인 일정표">
+<meta property="og:url" content="https://gmarket-sellerpromo.vercel.app/">
+<meta property="og:image" content="https://gmarket-sellerpromo.vercel.app/hero-banner.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
 <style>
@@ -24,7 +32,7 @@ h1,h2,h3,p{margin:0}
 header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
 .hd{display:flex;align-items:center;gap:40px;min-height:72px;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:10px}
-.brand b{font-size:24px}
+.brand b{font-size:24px;white-space:nowrap}
 .brand span{font-size:13px;color:var(--muted)}
 nav{display:flex;gap:28px;flex-grow:1}
 nav a{font-size:15px;font-weight:600;color:var(--ink)}
@@ -381,6 +389,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 .now-row[open] .chev{transform:rotate(180deg)}
 .now-row .body{padding:0 18px 18px}
 .now-row summary .u-tag{margin:0}
+.now-row .acts{display:flex;gap:6px}
+.now-row .ra{font-size:13px;font-weight:600;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);white-space:nowrap}
+.now-row .ra:hover{text-decoration:none;background:var(--bg)}
+.now-row .ra-fill{background:var(--accent);border-color:var(--accent);color:#fff}.now-row .ra-fill:hover{background:var(--accent);opacity:.9;color:#fff}
 .now-row.soon .left{color:var(--muted)}
 .now-row .body>article{border:0;border-radius:0;padding:0;background:none}
 .now-row .body>article.pc>div:first-child,.now-row .body>article>h3,.now-row .body .big-top .l>div:first-child,.now-row .body .big-top .l>h3{display:none}
@@ -690,7 +702,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <footer>
   <div class="wrap">
     <span>본 페이지는 가구/리빙 담당 MD가 셀러 안내용으로 정리한 자료입니다. 세부 조건은 ESM+ 공지를 우선합니다.</span>
-    <span>최종 업데이트 2026.09.28</span>
+    <span>최종 업데이트 <span data-updated>2026.10.07</span></span>
   </div>
 </footer>
 
@@ -738,7 +750,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   // 캘린더 오늘 표시
   $$('[data-date]').forEach(function(e){
     var n=diff(e.dataset.date);
-    if(n===0){e.classList.add('today');var i=e.querySelector('i');if(i)i.textContent=(i.textContent?i.textContent+'·':'')+'오늘';else e.insertAdjacentHTML('beforeend','<i>오늘</i>');}
+    if(n===0){e.classList.add('today');if(!e.querySelector('i'))e.insertAdjacentHTML('beforeend','<i>오늘</i>');}
     if(n<0)e.classList.add('off');
   });
   // 웹폼 신청 칸: 신청 기간 중에만 ESM+ 신청 페이지로 연결
@@ -857,6 +869,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       '<svg class="chev" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary><div class="body"></div>';
     det.querySelector('.nm').innerHTML=name;
     if(it.tag)det.querySelector('.u-tag').textContent=it.tag;
+    var acts='', fb=it.a.querySelector('.form-btn[href]'), dl=it.a.querySelector('.form-dl[href]');
+    if(fb)acts+='<a class="ra ra-fill" href="'+fb.getAttribute('href')+'" target="_blank" rel="noopener">ESM+ 신청</a>';
+    if(dl)acts+='<a class="ra" href="'+dl.getAttribute('href')+'" download="'+(dl.getAttribute('download')||'')+'">제안양식</a>';
+    if(acts)det.querySelector('.chev').insertAdjacentHTML('beforebegin','<span class="acts">'+acts+'</span>');
     det.querySelector('.body').appendChild(it.a);
     box.appendChild(det);
   });
