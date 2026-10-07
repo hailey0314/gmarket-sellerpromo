@@ -80,6 +80,20 @@ section{padding:48px 0 16px}
 .stat3 b{font-size:22px}
 .stat3 em{font-style:normal;font-size:12px;color:var(--muted)}
 .hero-r p{font-size:13px;line-height:1.6;color:var(--muted)}
+/* 상단 배너 롤링 */
+.hero-slider{position:relative}
+.hero-track{display:grid}
+.hero-track>.hero-top{grid-area:1/1;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s}
+.hero-track>.hero-top.on{opacity:1;visibility:visible}
+.hero-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px}
+.hero-nav[hidden]{display:none}
+.hero-nav .hn-arrow{width:36px;height:36px;border-radius:50%;border:1px solid #d6dbe4;background:#fff;color:var(--text);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.hero-nav .hn-arrow:hover{border-color:var(--accent);color:var(--accent)}
+.hero-dots{display:flex;gap:4px}
+.hero-dots button{width:28px;height:28px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.hero-dots button::after{content:"";width:8px;height:8px;border-radius:999px;background:#cfd6e1;transition:width .25s,background .25s}
+.hero-dots button.on::after{width:22px;background:var(--accent)}
+.hero-nav .hn-count{font-size:13px;color:var(--muted);min-width:34px;text-align:center}
 .due{margin:36px auto 0;background:#fff;border:2px solid var(--warm);border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
 .due-h{display:flex;align-items:center;justify-content:flex-start;gap:10px;flex-wrap:wrap}
 .due-h b{font-size:16px}
@@ -430,6 +444,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <!-- 이번 주 핵심 -->
 <div class="hero">
   <div class="wrap">
+   <div class="hero-slider" data-hero-slider aria-roledescription="carousel" aria-label="주요 행사 배너">
+    <div class="hero-track">
    <div class="hero-top" data-hero data-start="2026-10-12" data-end="2026-10-19">
     <div class="hero-l">
       <h1>10월 SUPER 마트&amp;리빙</h1>
@@ -446,7 +462,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <p>5천원 이상 구매 시 적용 · 당사 50 : 셀러 50 분담 · 대상 카테고리 한정 · 카드 할인 없음</p>
     </div>
    </div>
-   <div class="hero-top" data-hero data-start="2026-10-20" data-end="2026-10-23" style="display:none">
+   <div class="hero-top" data-hero data-start="2026-10-20" data-end="2026-10-23">
     <div class="hero-l">
       <h1>10월 월간쇼!핑</h1>
       <div class="chips"><span>신청 10/7~10/13</span><span>행사 10/20~10/23</span><span>참여 수수료 2%</span></div>
@@ -462,10 +478,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
       <p>1만원 이상 결제 시 적용 · 당사 21 : 셀러 50 : 카드 29 분담</p>
     </div>
    </div>
-   <div class="hero-top" data-hero data-start="2026-11-02" data-end="2026-11-13" style="display:none">
+   <div class="hero-top" data-hero data-start="2026-11-02" data-end="2026-11-13">
     <div class="hero-l">
       <h1>11월 빅스마일데이</h1>
       <div class="chips"><span>신청 10/13~10/26</span><span>행사 11/2~11/13</span><span>참여 수수료 3%</span></div>
+      <a class="btn btn-fill hero-dl form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-10-13" data-form-end="2026-10-26">ESM+에서 빅스마일데이 신청하기</a>
     </div>
     <div class="hero-r">
       <div class="top"><span data-phase-label data-start="2026-11-02" data-end="2026-11-13" data-before="행사 오픈까지" data-during="빅스마일데이 진행 중" data-after="빅스마일데이 종료">행사 오픈까지</span> <span class="badge b-warm" data-dday="2026-11-02" data-dday-end="2026-11-13">D-26</span></div>
@@ -475,6 +492,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
         <div><span>신청 대상</span><b>전체</b><em>전 카테고리</em></div>
       </div>
       <p>기준가 집계 10/6~10/26 · 2025/10/1~2026/9/30 판매 1건 이상 상품 참여 가능</p>
+    </div>
+   </div>
+    </div>
+    <div class="hero-nav" hidden>
+      <button type="button" class="hn-arrow" data-hn="-1" aria-label="이전 배너">‹</button>
+      <div class="hero-dots"></div>
+      <button type="button" class="hn-arrow" data-hn="1" aria-label="다음 배너">›</button>
+      <span class="hn-count"></span>
     </div>
    </div>
     <div class="due" data-due-box>
@@ -743,12 +768,44 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 </footer>
 
 <script>
-/* 상단 배너: 종료되지 않은 행사 중 가장 먼저 시작하는 것 1개만 표시 */
+/* 상단 배너 롤링: 종료되지 않은 행사를 시작일 순으로 넘겨 보기 (화살표·점·스와이프, 6초 자동 넘김, 마우스 올리면 멈춤) */
 (function(){
+  var root=document.querySelector('[data-hero-slider]'); if(!root)return;
   var t=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
-  var hs=[].slice.call(document.querySelectorAll('[data-hero]')).sort(function(a,b){return a.dataset.start<b.dataset.start?-1:1;});
-  var pick=hs.filter(function(h){return h.dataset.end>=t;})[0]||hs[hs.length-1];
-  hs.forEach(function(h){h.style.display=h===pick?'':'none';});
+  var all=[].slice.call(root.querySelectorAll('[data-hero]')).sort(function(a,b){return a.dataset.start<b.dataset.start?-1:1;});
+  var hs=all.filter(function(h){return h.dataset.end>=t;}); if(!hs.length)hs=[all[all.length-1]];
+  all.forEach(function(h){if(hs.indexOf(h)<0)h.style.display='none';});
+  var track=root.querySelector('.hero-track'); hs.forEach(function(h){track.appendChild(h);});
+  var nav=root.querySelector('.hero-nav'), dots=root.querySelector('.hero-dots'), cnt=root.querySelector('.hn-count'), cur=0, timer=null;
+  hs.forEach(function(h,i){
+    h.setAttribute('role','group');h.setAttribute('aria-roledescription','slide');h.setAttribute('aria-label',(i+1)+' / '+hs.length);
+    var b=document.createElement('button');b.type='button';b.setAttribute('aria-label',(h.querySelector('h1')||{}).textContent||('배너 '+(i+1)));
+    b.onclick=function(){go(i,true);};dots.appendChild(b);
+  });
+  function go(i,user){
+    cur=(i+hs.length)%hs.length;
+    hs.forEach(function(h,k){var on=k===cur;h.classList.toggle('on',on);h.setAttribute('aria-hidden',on?'false':'true');
+      [].forEach.call(h.querySelectorAll('a,button'),function(x){if(on)x.removeAttribute('tabindex');else x.setAttribute('tabindex','-1');});});
+    [].forEach.call(dots.children,function(d,k){d.classList.toggle('on',k===cur);d.setAttribute('aria-current',k===cur?'true':'false');});
+    cnt.textContent=(cur+1)+' / '+hs.length;
+    if(user)start();
+  }
+  function start(){stop(); if(hs.length>1)timer=setInterval(function(){go(cur+1);},6000);}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  go(0);
+  if(hs.length<2)return;
+  nav.hidden=false;
+  [].forEach.call(root.querySelectorAll('[data-hn]'),function(b){b.onclick=function(){go(cur+(+b.dataset.hn),true);};});
+  root.addEventListener('mouseenter',stop); root.addEventListener('mouseleave',start);
+  root.addEventListener('focusin',stop); root.addEventListener('focusout',start);
+  var x0=null,y0=null;
+  track.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;stop();},{passive:true});
+  track.addEventListener('touchend',function(e){
+    if(x0===null)return; var dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0; x0=null;
+    if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))go(cur+(dx<0?1:-1),true); else start();
+  });
+  document.addEventListener('visibilitychange',function(){document.hidden?stop():start();});
+  start();
 })();
 </script>
 <script>
