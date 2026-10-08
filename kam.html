@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>홍서하 KAM 대시보드</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#1f2937;--mute:#6b7280;--line:#e5e7eb;--blue:#2563eb;--green:#059669;--red:#dc2626;--amber:#d97706;--pale:#eff6ff}
+*{box-sizing:border-box}body{margin:0;font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
+header{background:#111827;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header h1{font-size:18px;margin:0;font-weight:700}header .sub{color:#9ca3af;font-size:12px}
+.tabs{display:flex;gap:4px;margin-left:auto}.tab{padding:8px 16px;border-radius:8px;cursor:pointer;background:#1f2937;color:#d1d5db;font-weight:600}.tab.on{background:var(--blue);color:#fff}
+.loader{display:flex;gap:8px;align-items:center;font-size:12px}.loader label{background:#374151;padding:6px 10px;border-radius:6px;cursor:pointer;color:#fff}.loader input{display:none}.loader .st{color:#fbbf24;max-width:360px}
+main{padding:18px 24px;max-width:1500px;margin:0 auto}
+.page{display:none}.page.on{display:block}
+.grid{display:grid;gap:14px}.g6{grid-template-columns:repeat(6,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:2fr 1fr}.g21{grid-template-columns:1fr 1fr}
+@media(max-width:1100px){.g6{grid-template-columns:repeat(3,1fr)}.g2,.g21,.g3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.card h3{margin:0 0 10px;font-size:13px;color:var(--mute);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.kpi .v{font-size:22px;font-weight:700;letter-spacing:-.5px}.kpi .s{font-size:12px;color:var(--mute);margin-top:4px}.kpi .s b{font-weight:600}
+.up{color:var(--green)}.dn{color:var(--red)}.warn{color:var(--amber)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th{color:var(--mute);font-weight:600;background:#f9fafb;position:sticky;top:0;cursor:pointer;user-select:none}
+td:first-child,th:first-child{text-align:left}td.l,th.l{text-align:left}
+tr.rt td{background:#fffbeb;color:#92400e}tr.tot td{font-weight:700;background:#f9fafb}
+tbody tr.sel{background:var(--pale)}tbody tr.pick{cursor:pointer}tbody tr.pick:hover{background:#f3f4f6}
+.bar{display:inline-block;height:8px;background:#dbeafe;border-radius:4px;width:70px;vertical-align:middle;margin-right:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue)}
+.bar.low i{background:var(--red)}.bar.mid i{background:var(--amber)}.bar.hi i{background:var(--green)}
+.pts li{margin:4px 0;line-height:1.45}.pts{margin:0;padding-left:18px}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:11px;background:#f3f4f6;color:#374151;margin-right:4px}.tag.G{background:#dcfce7;color:#166534}.tag.A{background:#fee2e2;color:#991b1b}
+.scroll{max-height:560px;overflow:auto}
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:10px}.tools input{padding:6px 10px;border:1px solid var(--line);border-radius:6px;font-size:13px;width:220px}.tools select{padding:6px;border:1px solid var(--line);border-radius:6px}
+svg text{font-size:10px;fill:#6b7280}
+.detail h2{margin:0 0 4px;font-size:17px}.detail .meta{color:var(--mute);font-size:12px;margin-bottom:10px}
+.mini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.mini div{background:#f9fafb;border-radius:8px;padding:8px 10px}.mini .k{font-size:11px;color:var(--mute)}.mini .v{font-size:15px;font-weight:700}
+.legend span{display:inline-block;margin-right:12px;font-size:11px;color:var(--mute)}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.foot{color:var(--mute);font-size:11px;margin-top:16px}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <div><h1 id="title">홍서하 KAM 대시보드</h1><div class="sub" id="subtitle"></div></div>
+  <div class="loader">
+    <label>① KAM 실적 파일 불러오기<input type="file" id="fKam" accept=".xlsx,.xlsm"></label>
+    <label>② 상품 관리파일 불러오기<input type="file" id="fProd" accept=".xlsx,.xlsm"></label>
+    <span class="st" id="status"></span>
+  </div>
+  <div class="tabs"><div class="tab on" data-p="p1">① 요약</div><div class="tab" data-p="p2">② 셀러 상세</div></div>
+</header>
+<main>
+<section id="p1" class="page on">
+  <div class="grid g6" id="kpis"></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>일자별 타겟 vs 실적 (GMV, 백만원) <span class="legend"><span><i style="background:#93c5fd"></i>실적</span><span><i style="background:#1f2937"></i>타겟</span><span><i style="background:#fbbf24"></i>당일 실시간</span></span></h3><div id="dailyChart"></div></div>
+    <div class="card"><h3>오늘의 포인트</h3><ul class="pts" id="points"></ul></div>
+  </div>
+  <div class="grid g21" style="margin-top:14px">
+    <div class="card"><h3>일자별 실적 상세</h3><div class="scroll" id="dailyTable"></div></div>
+    <div class="card"><h3>카테고리별 GMV (기간 누적)</h3><div class="scroll" id="catTable"></div></div>
+  </div>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><h3>CR 사용 구조 (관리셀러 합계, 백만원)</h3><div id="crTot"></div></div>
+    <div class="card"><h3>SA(광고) 사용 (관리셀러 합계, 백만원)</h3><div id="saTot"></div></div>
+    <div class="card"><h3>운영 중 기획전 링크</h3><div class="scroll" style="max-height:220px" id="links"></div></div>
+  </div>
+</section>
+<section id="p2" class="page">
+  <div class="card">
+    <div class="tools"><input id="q" placeholder="셀러명 / ID 검색"><select id="sortSel"><option value="T">월타겟 순</option><option value="rate">달성율 낮은 순</option><option value="gapAbs">부족분 큰 순</option><option value="ydGmv">전일 GMV 순</option><option value="crR">CR율 높은 순</option></select><span id="cnt" style="color:var(--mute)"></span></div>
+    <div class="scroll" style="max-height:420px" id="sellerTable"></div>
+  </div>
+  <div class="card detail" style="margin-top:14px" id="detail"><div style="color:var(--mute)">위 표에서 셀러를 클릭하면 일별 추이·주력상품·딜·CR·SA 상세가 표시됩니다.</div></div>
+</section>
+<div class="foot" id="foot"></div>
+</main>
+<script>
+const EMBED = null;
+let D = EMBED; let selBiz=null; let sortKey='T'; let qtxt='';
+// ---------- helpers ----------
+const d2date = s => new Date(Math.round((s-25569)*86400000));
+const WD=['일','월','화','수','목','금','토'];
+const md = s => {const d=d2date(s);return `${d.getUTCMonth()+1}/${d.getUTCDate()}(${WD[d.getUTCDay()]})`;};
+const mdShort = s => {const d=d2date(s);return `${d.getUTCMonth()+1}/${d.getUTCDate()}`;};
+const nz = v => (typeof v==='number'&&isFinite(v))?v:0;
+const mm = v => (nz(v)/1000).toLocaleString('ko-KR',{maximumFractionDigits:1,minimumFractionDigits:1}); // 천원→백만
+const eok = v => (nz(v)/100000).toFixed(2)+'억';
+const pct = (v,s=false) => {v=nz(v);const t=(v*100).toFixed(1)+'%';return s&&v>0?'+'+t:t;};
+const cls = v => v>0?'up':(v<0?'dn':'');
+const rateCls = r => r>=1?'hi':(r>=0.8?'mid':'low');
+const barH = r => `<span class="bar ${rateCls(r)}"><i style="width:${Math.min(100,Math.max(0,r*100))}%"></i></span>${pct(r)}`;
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function visibleDays(){ // 기준일까지 + 실시간(별도)
+  const base=D.m.b, rt=D.m.rt;
+  const shown=D.daily.filter(x=>x[0]<=base);
+  const rtRow=D.daily.find(x=>x[0]===rt && x[2]>0);
+  return {shown, rtRow};
+}
+function dayIdx(){ // seller d[] index of base day & rt day
+  const days=D.daily.filter(x=>x[0]<=D.m.rt).map(x=>x[0]);
+  return {days, iBase:days.indexOf(D.m.b), iRt:days.indexOf(D.m.rt)};
+}
+function enrich(){
+  const {iBase,iRt,days}=dayIdx(); const nDays=days.filter(d=>d<=D.m.b).length;
+  const lastDay=D.daily[D.daily.length-1][0]; const monthDays=d2date(lastDay).getUTCDate();
+  D.progress=nDays/monthDays;
+  D.s.forEach(s=>{
+    s.rate=s.T?s.C/s.T:0; s.gapAbs=Math.max(0,s.T-s.C);
+    const yd=s.d[iBase]||[0,0,0,0]; s.ydTgt=yd[0]; s.ydGmv=yd[1]; s.ydRate=yd[0]?yd[1]/yd[0]:0; s.ydPy=yd[3]; s.ydYoy=(yd[1]&&yd[3])?yd[1]/yd[3]-1:0;
+    const rt=iRt>=0?s.d[iRt]:null; s.rtGmv=rt?rt[1]:0;
+    s.crR=s.C?s.cr[0]/s.C:0; s.saR=s.C?s.sa[0]/s.C:0; s.nrevR=s.C?s.N/s.C:0;
+    s.cumT=s.d.slice(0,iBase+1).reduce((a,x)=>a+x[0],0); s.pace=s.cumT?s.C/s.cumT:0; // 일할 타겟 대비
+  });
+}
+// ---------- summary ----------
+function renderSummary(){
+  const {shown,rtRow}=visibleDays(); const [T,G,PY,Y,TRT,TR]=D.mtd;
+  const cum=D.summ[1], yd=D.summ[0], rt=D.summ[2];
+  const cumRate=cum[1]?cum[2]/cum[1]:0, ydRate=yd[1]?yd[2]/yd[1]:0;
+  const nrev=D.s.reduce((a,s)=>a+s.N,0), nrevT=D.s.reduce((a,s)=>a+s.NT,0);
+  const k=[
+    ['10월 누적 GMV',eok(G),`월타겟 ${eok(T)} · 달성 <b class="${rateCls(G/T)==='low'?'dn':'up'}">${pct(G/T)}</b> · 진척 ${pct(D.progress)}`],
+    [`기간 누적 (${mdShort(D.m.ms)}~${mdShort(D.m.b)})`,eok(cum[2]),`일할타겟 ${eok(cum[1])} · 달성 <b class="${cumRate>=1?'up':'dn'}">${pct(cumRate)}</b> · YoY <b class="${cls(cum[4])}">${pct(cum[4],true)}</b>`],
+    [`전일 ${md(yd[0])} GMV`,eok(yd[2]),`타겟 ${eok(yd[1])} · 달성 <b class="${ydRate>=1?'up':'dn'}">${pct(ydRate)}</b> · YoY <b class="${cls(yd[4])}">${pct(yd[4],true)}</b>`],
+    ['누적 순매출',eok(nrev),`순매출 타겟 ${eok(nrevT)} · 달성 ${pct(nrevT?nrev/nrevT:0)} · TR <b>${pct(TR)}</b> (타겟 ${pct(TRT)})`],
+    ['CR 사용액 (누적)',eok(D.tot.CR),`GMV 대비 <b class="${D.tot.CR/G>0.1?'warn':''}">${pct(D.tot.CR/G)}</b> · GMKT CR ${eok(D.tot.G)}`],
+    [`당일 실시간 ${rtRow?md(rt[0]):''}`,rtRow?eok(rt[2]):'-',rtRow?`타겟 ${eok(rt[1])} · 진행 ${pct(rt[1]?rt[2]/rt[1]:0)} · 전년 동요일 ${eok(rt[3])}`:'실시간 데이터 없음'],
+  ];
+  document.getElementById('kpis').innerHTML=k.map(x=>`<div class="card kpi"><h3>${x[0]}</h3><div class="v">${x[1]}</div><div class="s">${x[2]}</div></div>`).join('');
+  const rows=shown.concat(rtRow?[rtRow]:[]); const W=820,H=240,pl=40,pb=28,pt=10; const mx=Math.max(...rows.map(r=>Math.max(r[1],r[2])))*1.1||1;
+  const bw=(W-pl-10)/rows.length; const y=v=>pt+(H-pt-pb)*(1-v/mx);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}">`;
+  for(let i=0;i<=4;i++){const v=mx*i/4;svg+=`<line x1="${pl}" x2="${W-5}" y1="${y(v)}" y2="${y(v)}" stroke="#eee"/><text x="${pl-4}" y="${y(v)+3}" text-anchor="end">${Math.round(v/1000)}</text>`;}
+  rows.forEach((r,i)=>{const x=pl+i*bw; const isRt=rtRow&&r===rtRow; svg+=`<rect x="${x+bw*0.15}" y="${y(r[2])}" width="${bw*0.7}" height="${H-pb-y(r[2])}" fill="${isRt?'#fbbf24':(r[2]>=r[1]?'#60a5fa':'#93c5fd')}" rx="2"><title>${md(r[0])} 실적 ${mm(r[2])} / 타겟 ${mm(r[1])}</title></rect>`;
+    svg+=`<text x="${x+bw/2}" y="${H-pb+12}" text-anchor="middle">${mdShort(r[0])}</text>`; const rate=r[1]?r[2]/r[1]:0; svg+=`<text x="${x+bw/2}" y="${H-pb+23}" text-anchor="middle" fill="${rate>=1?'#059669':'#dc2626'}">${Math.round(rate*100)}%</text>`;});
+  let path=''; rows.forEach((r,i)=>{path+=(i?'L':'M')+(pl+i*bw+bw/2)+','+y(r[1])+' ';}); svg+=`<path d="${path}" fill="none" stroke="#1f2937" stroke-width="2"/>`;
+  rows.forEach((r,i)=>{svg+=`<circle cx="${pl+i*bw+bw/2}" cy="${y(r[1])}" r="3" fill="#1f2937"/>`;});
+  document.getElementById('dailyChart').innerHTML=svg+'</svg>';
+  let t=`<table><thead><tr><th class="l">일자</th><th>타겟(백만)</th><th>실적(백만)</th><th>달성율</th><th>부족분</th><th>전년(백만)</th><th>YoY</th><th>TR</th></tr></thead><tbody>`;
+  rows.forEach(r=>{const rate=r[1]?r[2]/r[1]:0, yoy=(r[2]&&r[3])?r[2]/r[3]-1:0, isRt=rtRow&&r===rtRow; t+=`<tr class="${isRt?'rt':''}"><td class="l">${md(r[0])}${isRt?' <span class="tag">실시간</span>':''}</td><td>${mm(r[1])}</td><td><b>${mm(r[2])}</b></td><td>${barH(rate)}</td><td class="${r[1]-r[2]>0?'dn':'up'}">${mm(r[1]-r[2])}</td><td>${mm(r[3])}</td><td class="${cls(yoy)}">${pct(yoy,true)}</td><td>${pct(r[4])}</td></tr>`;});
+  const sT=shown.reduce((a,r)=>a+r[1],0), sG=shown.reduce((a,r)=>a+r[2],0), sP=shown.reduce((a,r)=>a+r[3],0);
+  t+=`<tr class="tot"><td class="l">누적 (${mdShort(D.m.ms)}~${mdShort(D.m.b)})</td><td>${mm(sT)}</td><td>${mm(sG)}</td><td>${barH(sT?sG/sT:0)}</td><td class="${sT-sG>0?'dn':'up'}">${mm(sT-sG)}</td><td>${mm(sP)}</td><td class="${cls(sG/sP-1)}">${pct(sP?sG/sP-1:0,true)}</td><td>${pct(cum[5])}</td></tr></tbody></table>`;
+  document.getElementById('dailyTable').innerHTML=t;
+  const cats=D.cats.filter(c=>c[2]>0||c[1]>0).sort((a,b)=>b[2]-a[2]); const cT=cats.reduce((a,c)=>a+c[2],0); const hasPy=cats.some(x=>x[1]);
+  let c=`<table><thead><tr><th class="l">카테고리</th><th>GMV(백만)</th><th>비중</th>${hasPy?'<th>전년(백만)</th><th>YoY</th>':''}</tr></thead><tbody>`;
+  cats.forEach(x=>{c+=`<tr><td class="l">${esc(x[0])}</td><td>${mm(x[2])}</td><td>${pct(cT?x[2]/cT:0)}</td>${hasPy?`<td>${mm(x[1])}</td><td class="${cls(x[2]/x[1]-1)}">${x[1]?pct(x[2]/x[1]-1,true):'-'}</td>`:''}</tr>`;});
+  document.getElementById('catTable').innerHTML=c+'</tbody></table>';
+  const tt=D.tot; const crRows=[['바이어 CR',tt.B],['아이템 CR',tt.I],['PCS CR',tt.P],['마케팅 CR',tt.M],['GMKT CR',tt.G]];
+  document.getElementById('crTot').innerHTML=`<table><tbody>${crRows.map(r=>`<tr><td class="l">${r[0]}</td><td>${mm(r[1])}</td><td>${pct(tt.CR?r[1]/tt.CR:0)}</td></tr>`).join('')}<tr class="tot"><td class="l">총 CR</td><td>${mm(tt.CR)}</td><td>GMV 대비 ${pct(tt.CR/G)}</td></tr></tbody></table>`;
+  const saRows=[['총 광고비(AD_AMNT)',tt.AD],['CPC',tt.CPC],['CPP',tt.CPP],['AI',tt.AI]];
+  document.getElementById('saTot').innerHTML=`<table><tbody>${saRows.map(r=>`<tr><td class="l">${r[0]}</td><td>${mm(r[1])}</td><td>${r[0].startsWith('총')?'GMV 대비 '+pct(tt.AD/G):pct(tt.AD?r[1]/tt.AD:0)}</td></tr>`).join('')}<tr class="tot"><td class="l">광고 ROAS (GMV/광고비)</td><td colspan="2">${tt.AD?(G/tt.AD).toFixed(1)+'x':'-'}</td></tr></tbody></table>`;
+  document.getElementById('links').innerHTML=`<table><tbody>${D.links.filter(l=>l.g||l.a).map(l=>`<tr><td class="l">${esc(l.name)}</td><td class="l">${l.g?`<a href="${esc(l.g.trim())}" target="_blank">지마켓</a>`:''} ${l.a?`<a href="${esc(l.a.trim())}" target="_blank">옥션</a>`:''}</td></tr>`).join('')}</tbody></table>`;
+  const P=[];
+  P.push(`<b>누적 달성율 ${pct(G/T)}</b> vs 월 진척 ${pct(D.progress)} → ${G/T>=D.progress?'<span class="up">페이스 양호</span>':`<span class="dn">페이스 대비 ${eok((D.progress-G/T)*T)} 부족</span>`}. 일할타겟 기준 달성 ${pct(cumRate)}.`);
+  P.push(`전일 ${md(yd[0])}: 달성 <b class="${ydRate>=1?'up':'dn'}">${pct(ydRate)}</b>, YoY <b class="${cls(yd[4])}">${pct(yd[4],true)}</b>. ${ydRate<0.9?'평일 타겟 미달 — 상위 셀러 전일 실적 확인 필요.':'타겟 수준 유지.'}`);
+  const lag=D.s.filter(s=>s.T>=20000).sort((a,b)=>(a.pace-b.pace)).slice(0,5);
+  P.push(`<b>페이스 하위 셀러</b> (월타겟 2천만↑, 일할타겟 대비): ${lag.map(s=>`${esc(s.n)} <span class="dn">${pct(s.pace)}</span>`).join(', ')}`);
+  const gapTop=D.s.slice().sort((a,b)=>(b.cumT-b.C)-(a.cumT-a.C)).slice(0,5);
+  P.push(`<b>일할타겟 부족금액 Top5</b>: ${gapTop.map(s=>`${esc(s.n)} ${eok(s.cumT-s.C)}`).join(', ')}`);
+  const good=D.s.filter(s=>s.C>=1000).sort((a,b)=>b.pace-a.pace).slice(0,3);
+  P.push(`<b>페이스 상위</b>: ${good.map(s=>`${esc(s.n)} <span class="up">${pct(s.pace)}</span>`).join(', ')}`);
+  const crHi=D.s.filter(s=>s.C>=3000&&s.crR>0.12).sort((a,b)=>b.crR-a.crR).slice(0,5);
+  if(crHi.length) P.push(`<b>CR율 12% 초과</b>: ${crHi.map(s=>`${esc(s.n)} <span class="warn">${pct(s.crR)}</span>`).join(', ')} — 쿠폰 효율 점검.`);
+  const noSale=D.s.filter(s=>s.ydGmv===0&&s.T>=10000);
+  if(noSale.length) P.push(`<b>전일 매출 0원</b> (타겟 1천만↑): ${noSale.map(s=>esc(s.n)).join(', ')}`);
+  document.getElementById('points').innerHTML=P.map(x=>`<li>${x}</li>`).join('');
+}
+// ---------- sellers ----------
+let selName=null;
+function renderSellers(){
+  let rows=D.s.filter(s=>!qtxt||(s.n+' '+s.g+' '+s.a).toLowerCase().includes(qtxt));
+  const dir=(sortKey==='rate')?1:-1; rows.sort((a,b)=>(a[sortKey]-b[sortKey])*dir);
+  document.getElementById('cnt').textContent=`${rows.length}개 셀러 · 기준일 ${md(D.m.b)}`;
+  const tot=D.s.reduce((o,s)=>{for(const k of ['T','C','N','NT','ydTgt','ydGmv','cumT','rtGmv'])o[k]=(o[k]||0)+s[k];o.cr=(o.cr||0)+s.cr[0];o.sa=(o.sa||0)+s.sa[0];return o;},{});
+  let h=`<table><thead><tr><th class="l">셀러</th><th>월타겟(백만)</th><th>누적GMV(백만)</th><th>달성율</th><th>부족분</th><th>일할 페이스</th><th>전일 GMV</th><th>전일 달성</th><th>전일 YoY</th><th>실시간</th><th>순매출(백만)</th><th>TR</th><th>CR율</th><th>SA(백만)</th><th>YoY(시트)</th></tr></thead><tbody>`;
+  h+=`<tr class="tot"><td class="l">합계 (${D.s.length})</td><td>${mm(tot.T)}</td><td>${mm(tot.C)}</td><td>${barH(tot.C/tot.T)}</td><td>${mm(tot.T-tot.C)}</td><td>${pct(tot.cumT?tot.C/tot.cumT:0)}</td><td>${mm(tot.ydGmv)}</td><td>${pct(tot.ydTgt?tot.ydGmv/tot.ydTgt:0)}</td><td></td><td>${mm(tot.rtGmv)}</td><td>${mm(tot.N)}</td><td>${pct(tot.C?tot.N/tot.C:0)}</td><td>${pct(tot.C?tot.cr/tot.C:0)}</td><td>${mm(tot.sa)}</td><td></td></tr>`;
+  rows.forEach(s=>{h+=`<tr class="pick ${s.b===selBiz&&s.n===selName?'sel':''}" data-b="${s.b}" data-n="${esc(s.n)}"><td class="l"><b>${esc(s.n)}</b><div style="color:var(--mute);font-size:11px">${esc(s.g)}</div></td><td>${mm(s.T)}</td><td>${mm(s.C)}</td><td>${barH(s.rate)}</td><td class="dn">${mm(s.gapAbs)}</td><td class="${s.pace>=1?'up':(s.pace>=0.8?'warn':'dn')}">${pct(s.pace)}</td><td>${mm(s.ydGmv)}</td><td class="${s.ydRate>=1?'up':'dn'}">${pct(s.ydRate)}</td><td class="${cls(s.ydYoy)}">${s.ydPy?pct(s.ydYoy,true):'-'}</td><td>${s.rtGmv?mm(s.rtGmv):'-'}</td><td>${mm(s.N)}</td><td>${pct(s.TR)}</td><td class="${s.crR>0.12?'warn':''}">${pct(s.crR)}</td><td>${mm(s.sa[0])}</td><td class="${cls(s.Y)}">${pct(s.Y,true)}</td></tr>`;});
+  document.getElementById('sellerTable').innerHTML=h+'</tbody></table>';
+  document.querySelectorAll('#sellerTable tr.pick').forEach(tr=>tr.onclick=()=>{selBiz=tr.dataset.b;selName=tr.dataset.n;renderSellers();renderDetail();});
+}
+function renderDetail(){
+  const s=D.s.find(x=>x.b===selBiz&&x.n===selName)||D.s.find(x=>x.b===selBiz); if(!s) return;
+  const {days,iBase,iRt}=dayIdx(); const shown=s.d.slice(0,iBase+1); const rt=iRt>=0?s.d[iRt]:null;
+  let h=`<h2>${esc(s.n)} <span class="tag">${esc(s.g)}</span>${s.a?`<span class="tag">옥션 ${esc(s.a)}</span>`:''}${s.ct.map(c=>`<span class="tag">${esc(c)}</span>`).join('')}</h2><div class="meta">사업자 ${s.b} · 기준일 ${md(D.m.b)}${rt&&rt[1]>0?` · 실시간 ${md(D.m.rt)} GMV ${mm(rt[1])}백만 (타겟 대비 ${pct(rt[0]?rt[1]/rt[0]:0)})`:''}</div>`;
+  h+=`<div class="mini"><div><div class="k">월타겟 / 누적GMV</div><div class="v">${mm(s.T)} / ${mm(s.C)}</div></div><div><div class="k">달성율 · 일할 페이스</div><div class="v ${s.pace>=1?'up':'dn'}">${pct(s.rate)} · ${pct(s.pace)}</div></div><div><div class="k">누적 순매출 / 타겟 · TR</div><div class="v">${mm(s.N)} / ${mm(s.NT)} · ${pct(s.TR)}</div></div><div><div class="k">전년 10월 GMV · YoY(시트)</div><div class="v ${cls(s.Y)}">${mm(s.P)} · ${pct(s.Y,true)}</div></div></div>`;
+  const rows=shown.concat(rt?[rt]:[]); const W=820,H=200,pl=40,pb=28,pt=10; const mx=Math.max(1,...rows.map(r=>Math.max(r[0],r[1],r[3])))*1.1; const bw=(W-pl-10)/rows.length; const y=v=>pt+(H-pt-pb)*(1-Math.max(0,v)/mx);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}">`;
+  for(let i=0;i<=4;i++){const v=mx*i/4;svg+=`<line x1="${pl}" x2="${W-5}" y1="${y(v)}" y2="${y(v)}" stroke="#eee"/><text x="${pl-4}" y="${y(v)+3}" text-anchor="end">${(v/1000).toFixed(1)}</text>`;}
+  rows.forEach((r,i)=>{const x=pl+i*bw; const isRt=rt&&r===rt; svg+=`<rect x="${x+bw*0.12}" y="${y(r[3])}" width="${bw*0.35}" height="${H-pb-y(r[3])}" fill="#d1d5db" rx="2"><title>전년 ${mm(r[3])}</title></rect><rect x="${x+bw*0.5}" y="${y(r[1])}" width="${bw*0.38}" height="${H-pb-y(r[1])}" fill="${isRt?'#fbbf24':'#60a5fa'}" rx="2"><title>${md(days[i])} 실적 ${mm(r[1])} / 타겟 ${mm(r[0])}</title></rect><text x="${x+bw/2}" y="${H-pb+12}" text-anchor="middle">${mdShort(days[i])}</text><text x="${x+bw/2}" y="${H-pb+23}" text-anchor="middle" fill="${r[1]>=r[0]?'#059669':'#dc2626'}">${Math.round((r[0]?r[1]/r[0]:0)*100)}%</text>`;});
+  let path=''; rows.forEach((r,i)=>{path+=(i?'L':'M')+(pl+i*bw+bw/2)+','+y(r[0])+' ';}); svg+=`<path d="${path}" fill="none" stroke="#1f2937" stroke-width="2"/></svg>`;
+  h+=`<div class="grid g2"><div class="card"><h3>일별 타겟 vs 실적 (백만원) <span class="legend"><span><i style="background:#60a5fa"></i>실적</span><span><i style="background:#d1d5db"></i>전년 동요일</span><span><i style="background:#1f2937"></i>데일리 타겟</span><span><i style="background:#fbbf24"></i>실시간</span></span></h3>${svg}</div>`;
+  const c=s.cr, sa=s.sa; const crRows=[['바이어 CR',c[1]],['아이템 CR',c[2]],['PCS CR',c[3]],['마케팅 CR',c[4]],['GMKT CR',c[5]]];
+  h+=`<div class="card"><h3>CR · SA 디테일 (기간 누적, 백만원)</h3><table><tbody>${crRows.map(r=>`<tr><td class="l">${r[0]}</td><td>${mm(r[1])}</td><td>${pct(c[0]?r[1]/c[0]:0)}</td></tr>`).join('')}<tr class="tot"><td class="l">총 CR</td><td>${mm(c[0])}</td><td class="${s.crR>0.12?'warn':''}">GMV 대비 ${pct(s.crR)}</td></tr><tr><td class="l">전년 동기 CR / GMV</td><td>${mm(c[6])}</td><td>${c[7]?pct(c[6]/c[7]):'-'}</td></tr><tr><td class="l" style="padding-top:10px"><b>SA 광고비</b></td><td style="padding-top:10px">${mm(sa[0])}</td><td style="padding-top:10px">GMV 대비 ${pct(s.saR)} · ROAS ${sa[0]?(s.C/sa[0]).toFixed(1)+'x':'-'}</td></tr><tr><td class="l">CPC / CPP / AI</td><td colspan="2">${mm(sa[1])} / ${mm(sa[2])} / ${mm(sa[3])}</td></tr><tr><td class="l">전년 동기 광고비</td><td>${mm(sa[4])}</td><td class="${cls(sa[0]-sa[4])}">${sa[4]?pct(sa[0]/sa[4]-1,true):'-'}</td></tr></tbody></table></div></div>`;
+  h+=`<div class="grid g21" style="margin-top:14px"><div class="card"><h3>주력상품 Top5 (상품 관리파일, 10월 누적 영업GMV 백만원) <span>상품 ${s.pc}개 · 상품합계 ${mm(s.pg)}</span></h3>`;
+  if(s.pr.length){h+=`<table><thead><tr><th class="l">채널</th><th class="l">상품코드</th><th class="l">상품명</th><th>GMV</th><th>비중</th><th>수량</th></tr></thead><tbody>${s.pr.map(p=>`<tr><td class="l"><span class="tag ${p[0]}">${p[0]==='G'?'지마켓':'옥션'}</span></td><td class="l"><a href="${p[0]==='G'?'https://item.gmarket.co.kr/Item?goodscode='+p[1]:'https://itempage3.auction.co.kr/DetailView.aspx?itemno='+p[1]}" target="_blank">${p[1]}</a></td><td class="l" title="${esc(p[2])}">${esc(p[2])}</td><td>${mm(p[3])}</td><td>${pct(s.pg?p[3]/s.pg:0)}</td><td>${p[4].toLocaleString()}</td></tr>`).join('')}</tbody></table>`;}
+  else h+=`<div style="color:var(--mute)">상품 데이터 없음 (상품 관리파일을 불러오면 표시됩니다)</div>`;
+  h+=`</div><div class="card"><h3>10월 딜 노출 (백만원)</h3>`;
+  if(s.dl.length){h+=`<table><thead><tr><th class="l">노출일</th><th class="l">구좌</th><th class="l">상품</th><th>딜 GMV</th></tr></thead><tbody>${s.dl.map(d=>`<tr><td class="l">${esc(d[0])}</td><td class="l">${esc(d[1])}</td><td class="l" title="${esc(d[2])}">${esc(d[2])}</td><td>${d[3]?mm(d[3]):'<span style="color:var(--mute)">예정</span>'}</td></tr>`).join('')}</tbody></table>`;}
+  else h+=`<div style="color:var(--mute)">10월 딜 노출 없음</div>`;
+  h+=`</div></div>`;
+  h+=`<div class="card" style="margin-top:14px"><h3>일별 상세</h3><table><thead><tr><th class="l">일자</th><th>타겟</th><th>GMV</th><th>달성율</th><th>순매출</th><th>TR</th><th>전년 동요일</th><th>YoY</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${rt&&r===rt?'rt':''}"><td class="l">${md(days[i])}</td><td>${mm(r[0])}</td><td><b>${mm(r[1])}</b></td><td>${barH(r[0]?r[1]/r[0]:0)}</td><td>${mm(r[2])}</td><td>${pct(r[1]?r[2]/r[1]:0)}</td><td>${mm(r[3])}</td><td class="${cls(r[1]/r[3]-1)}">${r[3]>0?pct(r[1]/r[3]-1,true):'-'}</td></tr>`).join('')}</tbody></table></div>`;
+  const lk=D.links.filter(l=>(l.g||l.a)&&(s.n.includes(l.name)||l.name.includes(s.n.slice(0,3))));
+  if(lk.length) h+=`<div style="margin-top:8px">기획전: ${lk.map(l=>`${esc(l.name)} ${l.g?`<a href="${esc(l.g.trim())}" target="_blank">[G]</a>`:''}${l.a?`<a href="${esc(l.a.trim())}" target="_blank">[A]</a>`:''}`).join(' · ')}</div>`;
+  document.getElementById('detail').innerHTML=h;
+}
+function renderAll(){
+  enrich();
+  document.getElementById('subtitle').textContent=`${D.m.o} · ${D.m.t} · 기준일 ${md(D.m.b)} (실시간 ${md(D.m.rt)}) · 데이터 생성 ${D.m.g.replace('T',' ')}`;
+  if(!selBiz){selBiz=D.s[0].b;selName=D.s[0].n;}
+  renderSummary(); renderSellers(); renderDetail();
+  document.getElementById('foot').textContent=`데이터 출처: ★KAM 실적_홍서하_4Q.xlsx (데일리타겟 · 사업자 실적 RAW · 1. Daily · 주력관리코드), 상품 관리파일_홍서하.xlsx (raw_G · raw_a · 딜실적). 금액 단위: 백만원(표) / 억원(카드). YoY(시트)는 데일리타겟 시트 값 그대로이며, 일별 YoY는 전년 동요일(-364일) 기준입니다. 화면은 기준일까지의 실적만 표시하고 실시간은 별도 표기합니다.`;
+}
+// ---------- tabs / tools ----------
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id===t.dataset.p));});
+document.getElementById('q').oninput=e=>{qtxt=e.target.value.trim().toLowerCase();if(D)renderSellers();};
+document.getElementById('sortSel').onchange=e=>{sortKey=e.target.value;if(D)renderSellers();};
+// ---------- Excel parsers (auto-update) ----------
+const colIdx = L => {let n=0;for(const ch of L)n=n*26+(ch.charCodeAt(0)-64);return n-1;};
+const status=(m,warn)=>{const el=document.getElementById('status');el.textContent=m;el.style.color=warn?'#f87171':'#fbbf24';};
+function sheetRows(wb,name,opts){const ws=wb.Sheets[name]; if(!ws) throw new Error(`시트 '${name}' 없음`); return XLSX.utils.sheet_to_json(ws,Object.assign({header:1,defval:'',raw:true},opts||{}));}
+function parseKam(wb){
+  const S=sheetRows(wb,'데일리타겟'); const R=(r,c)=>(S[r-1]||[])[c]??'';
+  const m={b:+R(3,0),rt:+R(39,7),ms:+R(39,9),o:String(R(39,4)),t:String(R(40,4)),g:new Date().toISOString().slice(0,16)};
+  if(!m.b||!m.ms) throw new Error('데일리타겟 A3(기준일)/J39(월시작일)을 읽지 못했습니다');
+  const k=v=>Math.round((+v||0)/1000);
+  const mtd=[k(R(3,4)),k(R(3,5)),k(R(3,8)),+R(3,9)||0,+R(3,10)||0,+R(3,11)||0];
+  const daily=[]; for(let r=4;r<=34;r++){if(R(r,3)==='')continue; daily.push([+R(r,3),k(R(r,4)),k(R(r,5)),k(R(r,8)),+R(r,11)||0]);}
+  const summ=[36,37,38].map(r=>[+R(r,0),k(R(r,4)),k(R(r,5)),k(R(r,8)),+R(r,9)||0,+R(r,11)||0]);
+  const dateRow=S[41]||[]; const blocks=[]; for(let c=17;c<dateRow.length;c+=11){if(typeof dateRow[c]==='number'&&dateRow[c]<=m.rt)blocks.push({c,d:dateRow[c]});}
+  const sellers=[]; for(let r=45;r<=S.length;r++){const x=S[r-1]||[]; if(!x[5])continue;
+    sellers.push({g:String(x[0]),a:String(x[1]),b:String(x[4]),n:String(x[5]),T:k(x[6]),C:k(x[7]),P:k(x[9]),Y:+x[10]||0,NT:k(x[11]),N:k(x[12]),TT:+x[13]||0,TR:+x[14]||0,
+      cr:[0,0,0,0,0,k(x[16]),0,0],sa:[0,0,0,0,0],ct:[],d:blocks.map(b=>[k(x[b.c]),k(x[b.c+1]),k(x[b.c+8]),k(x[b.c+5])]),pg:0,pc:0,pr:[],dl:[]});}
+  let cats=[]; try{const C=sheetRows(wb,'1. Daily'); for(let r=9;r<=33;r++){const x=C[r-1]||[]; const nm=x[2]; if(!nm||nm==='Cate 합계'||nm==='팀 / 카테고리'||nm===m.o)continue; cats.push([String(nm),0,k(x[5]),k(x[9]),k(x[11])]);}}catch(e){}
+  let links=[]; try{const J=sheetRows(wb,'주력관리코드'); for(let r=3;r<=19;r++){const x=J[r-1]||[]; if(x[1]&&x[1]!=='지마켓')links.push({name:String(x[1]),g:String(x[2]||''),a:String(x[5]||'')});}}catch(e){}
+  const tot={CR:0,B:0,I:0,P:0,M:0,G:0,AD:0,CPC:0,CPP:0,AI:0}; const byBiz={}; const catBiz={};
+  const ws=wb.Sheets['사업자 실적 RAW'];
+  if(ws){const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:true,range:1}); const hdr=rows[0].map(String); const ix=n=>hdr.indexOf(n);
+    const iD=ix('BASE_DT'),iB=ix('BIZ_NO'),iC=ix('CTGRY_L_NM'),iG=ix('GMV'),f={CR:ix('CR'),B:ix('BUYER_CR'),I:ix('ITEM_CR'),P:ix('PCS_CR'),M:ix('MARKETING_CR'),G:ix('GMKT_CR'),AD:ix('AD_AMNT'),CPC:ix('CPC'),CPP:ix('CPP'),AI:ix('AI')};
+    for(let i=1;i<rows.length;i++){const r=rows[i]; const d=+r[iD]; if(!d)continue; const cur=d>=m.ms&&d<=m.rt, py=d>=m.ms-364&&d<=m.rt-364; if(!cur&&!py)continue; const b=String(r[iB]); const o=byBiz[b]=byBiz[b]||{CR:0,B:0,I:0,P:0,M:0,G:0,AD:0,CPC:0,CPP:0,AI:0,pyCR:0,pyGMV:0,pyAD:0};
+      if(cur){for(const key in f){const v=+r[f[key]]||0;o[key]+=v;tot[key]+=v;} const cb=catBiz[b]=catBiz[b]||{}; cb[r[iC]]=(cb[r[iC]]||0)+(+r[iG]||0);} else {o.pyCR+=+r[f.CR]||0;o.pyGMV+=+r[iG]||0;o.pyAD+=+r[f.AD]||0;}}
+    for(const key in tot)tot[key]=k(tot[key]);
+    sellers.forEach(s=>{const o=byBiz[s.b]; if(!o)return; s.cr=[k(o.CR),k(o.B),k(o.I),k(o.P),k(o.M),k(o.G),k(o.pyCR),k(o.pyGMV)]; s.sa=[k(o.AD),k(o.CPC),k(o.CPP),k(o.AI),k(o.pyAD)]; s.ct=Object.entries(catBiz[s.b]||{}).sort((p,q)=>q[1]-p[1]).slice(0,2).map(x=>x[0]);});
+  }
+  return {m,mtd,summ,daily,cats,links,tot,pdates:[],s:sellers};
+}
+function parseProd(wb){
+  if(!D) throw new Error('먼저 ① KAM 실적 파일을 불러오세요');
+  const ms=d2date(D.m.ms), msStr=ms.toISOString().slice(0,10); const k=v=>Math.round((+v||0)/1000);
+  const idMap={}; D.s.forEach(s=>{(s.g+','+s.a).split(',').map(x=>x.trim().toLowerCase()).filter(Boolean).forEach(id=>idMap[id]=s.b);});
+  const acc={}; const dateSet=new Set();
+  function run(sheet,cols,ch){const ws=wb.Sheets[sheet]; if(!ws)return; const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:true});
+    for(let i=1;i<rows.length;i++){const r=rows[i]; let dt=r[cols.d]; if(typeof dt==='number')dt=d2date(dt).toISOString().slice(0,10); dt=String(dt).slice(0,10); if(dt<msStr)continue; const id=String(r[cols.id]).trim().toLowerCase(); const b=idMap[id]; if(!b)continue; dateSet.add(dt);
+      const code=String(r[cols.code]); const a=acc[b]=acc[b]||{}; const p=a[code]=a[code]||{ch,code,name:String(r[cols.nm]).slice(0,28),gmv:0,qty:0}; p.gmv+=+r[cols.gmv]||0; p.qty+=+r[cols.qty]||0;}}
+  run('raw_G',{d:colIdx('B'),id:colIdx('I'),code:colIdx('J'),nm:colIdx('K'),gmv:colIdx('O'),qty:colIdx('Q')},'G');
+  run('raw_a',{d:colIdx('B'),id:colIdx('H'),code:colIdx('I'),nm:colIdx('J'),gmv:colIdx('N'),qty:colIdx('P')},'A');
+  const code2biz={}; D.s.forEach(s=>{const a=acc[s.b]||{}; const list=Object.values(a).sort((p,q)=>q.gmv-p.gmv); s.pg=k(list.reduce((t,p)=>t+p.gmv,0)); s.pc=list.length; s.pr=list.slice(0,5).map(p=>[p.ch,p.code,p.name,k(p.gmv),p.qty]); list.forEach(p=>code2biz[p.code]=s.b); s.dl=[];});
+  const mon=ms.getUTCMonth()+1; const pfx=String(mon).padStart(2,'0')+'/';
+  const dealCols={h:2,d:'B',k:'E',kd:'F',code:'K',nm:'L',gmv:'N'}; const seen=new Set();
+  for(const sh of wb.SheetNames.filter(n=>/딜실적|월 실적/.test(n))){const ws=wb.Sheets[sh]; const c=dealCols; const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:true});
+    for(let i=c.h;i<rows.length;i++){const r=rows[i]; const dt=String(r[colIdx(c.d)]); if(!dt.startsWith(pfx))continue; const code=String(r[colIdx(c.code)]); const nm=String(r[colIdx(c.nm)]); let b=code2biz[code]; if(!b){const s=D.s.find(x=>nm.includes(x.n)); b=s&&s.b;} if(!b)continue; const key=b+'|'+dt+'|'+code; if(seen.has(key))continue; seen.add(key);
+      const s=D.s.find(x=>x.b===b); const slot=[r[colIdx(c.k)],r[colIdx(c.kd)]].filter(x=>x!=='').join(' / ')||'일반딜'; s.dl.push([dt,slot,nm.slice(0,24),k(r[colIdx(c.gmv)])]);}}
+  D.s.forEach(s=>s.dl.sort((a,b)=>a[0]<b[0]?-1:1)); D.pdates=[...dateSet].sort();
+}
+async function readWb(file,sheets){const buf=await file.arrayBuffer(); return XLSX.read(buf,{type:'array',cellDates:false,sheets});}
+document.getElementById('fKam').onchange=async e=>{const f=e.target.files[0]; if(!f)return; try{status(`${f.name} 읽는 중… (RAW 시트가 커서 수십 초 걸릴 수 있음)`); await new Promise(r=>setTimeout(r,50)); const wb=await readWb(f,['데일리타겟','1. Daily','주력관리코드','사업자 실적 RAW']); const nd=parseKam(wb); const old=D; D=nd; if(old&&old.pdates&&old.pdates.length){D.s.forEach(s=>{const o=old.s.find(x=>x.b===s.b&&x.n===s.n); if(o){s.pg=o.pg;s.pc=o.pc;s.pr=o.pr;s.dl=o.dl;}}); D.pdates=old.pdates;} renderAll(); status(`✔ ${f.name} 반영 완료 (기준일 ${md(D.m.b)}, 셀러 ${D.s.length}개) → 다음 ② 상품 관리파일`);}catch(err){status('오류: '+err.message,true);console.error(err);} e.target.value='';};
+document.getElementById('fProd').onchange=async e=>{const f=e.target.files[0]; if(!f)return; try{status(`${f.name} 읽는 중…`); await new Promise(r=>setTimeout(r,50)); const wb=await readWb(f); parseProd(wb); renderAll(); status(`✔ ${f.name} 반영 완료 (상품 데이터 ${D.pdates.length}일치)`);}catch(err){status('오류: '+err.message,true);console.error(err);} e.target.value='';};
+// ---------- init ----------
+if(D){renderAll();} else {status('① KAM 실적 파일(★KAM 실적_홍서하_4Q.xlsx)을 먼저 불러오세요');}
+</script>
+</body>
+</html>
