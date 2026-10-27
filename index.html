@@ -91,11 +91,18 @@ nav a.active::after{content:"";position:absolute;left:10px;right:10px;bottom:-15
 .dlmenu summary::after{content:"";width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:rotate(45deg);margin:-3px 0 0 4px}
 .dlmenu[open] summary{border-color:var(--b);color:var(--b)}
 .dlmenu[open] summary::after{transform:rotate(-135deg);margin-top:3px}
-.dlmenu .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:30;width:320px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(17,24,39,.14);padding:8px;display:flex;flex-direction:column;gap:2px}
+.dlmenu .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:30;width:320px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(17,24,39,.14);padding:8px;display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 90px);overflow-y:auto}
 .dlmenu .mh{font-size:13px;line-height:1.55;font-weight:600;color:var(--ink);padding:8px 12px 10px;border-bottom:1px solid var(--line2);margin-bottom:4px}
 .dlmenu .menu a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;font-size:15px;font-weight:700;color:var(--ink)}
 .dlmenu .menu a:hover{background:var(--b-soft);color:var(--b);text-decoration:none}
 .dlmenu .menu em{font-style:normal;font-size:12px;font-weight:400;color:var(--muted)}
+.dlmenu .sub summary{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;font-size:15px;font-weight:700;color:var(--ink);border:0}
+.dlmenu .sub summary:hover{background:var(--b-soft);color:var(--b)}
+.dlmenu .sub summary::after{margin:-3px 2px 0 0}
+.dlmenu .sub[open] summary{color:var(--b)}
+.dlmenu .sub[open] summary::after{transform:rotate(-135deg);margin-top:3px}
+.dlmenu .sublist{display:flex;flex-direction:column;gap:2px;margin:2px 0 4px 8px;padding-left:8px;border-left:2px solid var(--line2)}
+.dlmenu .sublist .mh{font-size:12px;font-weight:500;color:var(--muted);padding:6px 12px 8px}
 .dlmenu .mf{font-size:11.5px;color:var(--muted);padding:6px 10px 4px;border-top:1px solid var(--line2);margin-top:4px}
 
 /* ---------- 섹션 공통 ---------- */
@@ -574,12 +581,24 @@ footer{padding:44px 0 36px;border-top:1px solid var(--line);background:#fff}
     <div class="btns">
       <a class="btn btn-line" href="https://www.esmplus.com" target="_blank" rel="noopener">ESM+ 바로가기</a>
       <details class="dlmenu">
-        <summary class="btn btn-line">제안양식 다운로드</summary>
+        <summary class="btn btn-line">자료실</summary>
         <div class="menu" role="menu">
-          <b class="mh">아래 프로모션명을 검색하시면<br>쿠폰스킴이 들어있는 견적서 다운이 가능합니다</b>
-          <a role="menuitem" data-end="2026-11-01" href="quote-stylecatch.xlsx" download="슈퍼 스타일 캐치_업체명.xlsx">슈퍼 스타일 캐치<em>10/24~11/1 · B1 15%·12%·10% + 반반 15%·20%</em></a>
-          <a role="menuitem" data-end="2026-11-13" href="quote-bsd.xlsx" download="빅스마일데이_업체명.xlsx">빅스마일데이<em>11/2~11/13 · B2 10%·7%·5% 당사 100% · 수수료 3%</em></a>
-          <a role="menuitem" href="quote-regular.xlsx" download="상시_업체명.xlsx">상시<em>행사 외 기간 · B1 15%·20% 반반 기본</em></a>
+          <details class="sub">
+            <summary>제안양식</summary>
+            <div class="sublist">
+              <b class="mh">아래 프로모션명을 검색하시면<br>쿠폰스킴이 들어있는 견적서 다운이 가능합니다</b>
+              <a role="menuitem" data-end="2026-11-01" href="quote-stylecatch.xlsx" download="슈퍼 스타일 캐치_업체명.xlsx">슈퍼 스타일 캐치<em>10/24~11/1 · B1 15%·12%·10% + 반반 15%·20%</em></a>
+              <a role="menuitem" data-end="2026-11-13" href="quote-bsd.xlsx" download="빅스마일데이_업체명.xlsx">빅스마일데이<em>11/2~11/13 · B2 10%·7%·5% 당사 100% · 수수료 3%</em></a>
+              <a role="menuitem" href="quote-regular.xlsx" download="상시_업체명.xlsx">상시<em>행사 외 기간 · B1 15%·20% 반반 기본</em></a>
+            </div>
+          </details>
+          <details class="sub">
+            <summary>디자인 가이드</summary>
+            <div class="sublist">
+              <b class="mh">빅스마일데이 셀러 자체 제작 배너 가이드<br>프레임 컬러·텍스트·영역은 임의 변경할 수 없습니다</b>
+              <a role="menuitem" href="guide-bsd-banner.zip" download="빅스마일데이 배너 가이드.zip">빅스마일데이 배너 가이드 (ZIP)<em>가이드 PDF + 브랜드샵 JPG + 미니샵·셀러기획전&브랜드관 PSD · 56MB</em></a>
+            </div>
+          </details>
         </div>
       </details>
       <a class="btn btn-fill" href="#contact">문의 및 행사 제안하기</a>
