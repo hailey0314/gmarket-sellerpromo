@@ -162,37 +162,6 @@ section:nth-of-type(odd){background:var(--bg)}
 .stat3 span{font-size:13px;font-weight:600;color:var(--muted)}
 .stat3 b{font-family:var(--display);font-weight:700;font-size:40px;line-height:1.15;color:var(--b);letter-spacing:-.02em}
 .stat3 em{font-style:normal;font-size:13px;color:var(--text)}
-/* AI Product Ads 첫 광고 지원 배너·카드 */
-.hero-top.ai{gap:0}
-.hero-top.ai .ai-ban{flex:1;position:relative;overflow:hidden;border-radius:22px;padding:40px 44px;min-height:280px;display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(120deg,#0B1B4D 0%,#10308F 55%,#1F5EE0 100%);color:#fff}
-.ai-l{position:relative;z-index:2;display:flex;flex-direction:column;gap:14px;max-width:560px}
-.ai-pill{align-self:flex-start;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.12);font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.02em;color:#fff}
-.ai-sub{font-size:15px;color:rgba(255,255,255,.9);margin:0}
-.hero-top.ai h1{font-family:var(--display);font-weight:700;font-size:38px;line-height:1.25;letter-spacing:-.02em;color:#fff}
-.hero-top.ai h1 em{font-style:normal;color:#FFD84D}
-.ai-btn{align-self:flex-start;min-height:46px;padding:0 22px;font-size:15px;background:#FFD84D;color:#0B1B4D;font-weight:700;border:0}
-.ai-btn:hover{text-decoration:none;background:#FFE27A;color:#0B1B4D}
-.ai-note{font-size:12.5px;color:rgba(255,255,255,.85)}
-.ai-r{position:relative;z-index:1;flex:0 0 300px;height:220px}
-.ai-cp{position:absolute;left:30px;top:44px;width:230px;height:128px;border-radius:16px;background:linear-gradient(135deg,#FFE27A,#FFC21A);color:#0B1B4D;transform:rotate(-6deg);box-shadow:0 18px 36px rgba(0,0,0,.28);display:flex;flex-direction:column;justify-content:center;padding:0 22px}
-.ai-cp::before,.ai-cp::after{content:"";position:absolute;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:#10308F}
-.ai-cp::before{left:-11px}.ai-cp::after{right:-11px}
-.ai-cp small{font-size:12px;font-weight:700;letter-spacing:.06em}
-.ai-cp b{font-family:var(--display);font-weight:700;font-size:44px;line-height:1.1;letter-spacing:-.02em}
-.ai-cf{position:absolute;display:block;border-radius:2px;animation:aiFloat 5s ease-in-out infinite}
-.ai-cf.c1{left:8px;top:18px;width:14px;height:8px;background:#FFD84D;transform:rotate(25deg)}
-.ai-cf.c2{left:250px;top:10px;width:10px;height:10px;background:#7FB2FF;border-radius:50%;animation-delay:.8s}
-.ai-cf.c3{left:282px;top:96px;width:16px;height:7px;background:#fff;transform:rotate(-35deg);animation-delay:1.4s}
-.ai-cf.c4{left:20px;top:176px;width:12px;height:12px;background:#4D8DFF;transform:rotate(45deg);animation-delay:2s}
-.ai-cf.c5{left:200px;top:190px;width:15px;height:7px;background:#FFD84D;transform:rotate(-20deg);animation-delay:.4s}
-.ai-cf.c6{left:140px;top:2px;width:8px;height:8px;background:#fff;border-radius:50%;animation-delay:2.6s}
-@keyframes aiFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
-@media (prefers-reduced-motion:reduce){.ai-cf{animation:none}}
-@media (max-width:860px){.hero-top.ai .ai-ban{padding:28px 22px;min-height:0}.ai-r{display:none}.hero-top.ai h1{font-size:28px}}
-.pc.ai-card{border-color:#10308F;box-shadow:inset 0 4px 0 #10308F}
-.pc.ai-card .ai-warn{background:#FFF6D1;border:1px solid #FFD84D;border-left:4px solid #D93025;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700;color:#0B1B4D;line-height:1.55}
-.pc.ai-card .ai-btn2{align-self:flex-start;background:#0B1B4D;color:#fff}
-.pc.ai-card .ai-btn2:hover{background:#10308F;color:#fff;text-decoration:none}
 /* 배너 넘김 */
 .hero-nav{display:flex;align-items:center;justify-content:flex-start;gap:10px;margin-top:20px;position:relative;z-index:1}
 .hero-nav[hidden]{display:none}
@@ -729,19 +698,21 @@ footer{padding:44px 0 36px;border-top:1px solid var(--line);background:#fff}
       <p>B2 7% 1원 이상 최대 2천원 / 5만원 이상 최대 1만원 / 25만원 이상 최대 3만원 · 매일 무제한 · 웹폼 참여셀러 대상<br>카드 7% 2만원 이상 최대 1만원 · 셀러 50 : 카드 50 · 카드 할인 분담 동의 셀러 상품</p>
     </div>
    </div>
-   <div class="hero-top ai" data-hero data-start="2026-11-25" data-end="2099-12-31">
-    <div class="ai-ban">
-      <div class="ai-l">
-        <span class="ai-pill">AI Product Ads 첫 광고 지원</span>
-        <p class="ai-sub">AI Product Ads의 광고 효과가 궁금한</p>
-        <h1>신규 광고주님께 <em>광고 지원금 5만원</em>을 드려요</h1>
-        <div class="hero-cta"><a class="btn ai-btn hero-dl" href="https://adcenter.esmplus.com/promotion" target="_blank" rel="noopener">광고센터에서 신청하기</a></div>
-        <span class="ai-note">ON 상태로 변경하기 전에 프로모션을 먼저 신청해 주세요</span>
+   <div class="hero-top" data-hero data-start="2026-11-25" data-end="2099-12-31">
+    <div class="hero-l">
+      <span class="hero-tag">AI Product Ads 첫 광고 지원</span>
+      <h1>신규 광고주님께 광고 지원금 5만원</h1>
+      <div class="chips"><span>광고센터 프로모션 신청</span><span>ON 변경 전 먼저 신청</span><span>상시 운영</span></div>
+      <div class="hero-cta"><a class="btn btn-fill hero-dl" href="https://adcenter.esmplus.com/promotion" target="_blank" rel="noopener">광고센터에서 신청하기</a></div>
+    </div>
+    <div class="hero-r">
+      <div class="top"><span>AI Product Ads 첫 광고 지원</span> <span class="badge b-green">상시 운영</span></div>
+      <div class="stat3">
+        <div><span>지원금</span><b>5만원</b><em>광고 이머니 지급</em></div>
+        <div><span>지급 시점</span><b>다음날</b><em>신청일 기준 · 23시 이후 신청 시 이틀 후</em></div>
+        <div><span>신청 순서</span><b>ON 전</b><em>ON 변경 전에 먼저 신청</em></div>
       </div>
-      <div class="ai-r" aria-hidden="true">
-        <span class="ai-cf c1"></span><span class="ai-cf c2"></span><span class="ai-cf c3"></span><span class="ai-cf c4"></span><span class="ai-cf c5"></span><span class="ai-cf c6"></span>
-        <div class="ai-cp"><small>광고 이머니</small><b>50,000</b></div>
-      </div>
+      <p>8/5 정식 오픈 이후 AI Product Ads 광고비 과금 이력이 없는 판매자 · 광고센터 프로모션 페이지에서 직접 신청</p>
     </div>
    </div>
     </div>
@@ -816,10 +787,10 @@ footer{padding:44px 0 36px;border-top:1px solid var(--line);background:#fff}
         </div>
         <a class="btn btn-fill form-btn" href="https://www.esmplus.com/Event/BigSmileDay" target="_blank" rel="noopener" data-form-start="2026-11-12" data-form-end="2026-11-18">ESM+에서 신청하기</a>
       </article>
-      <article class="card pc ai-card">
-        <div><span class="badge b-green">상시 운영</span> <span class="badge b-gray">광고 지원</span></div>
+      <article class="card pc">
+        <div><span class="badge b-green">상시 운영</span></div>
         <h3>G마켓 AI Product Ads<br>첫 광고 지원 프로모션</h3>
-        <div class="ai-warn">ON 상태로 변경하기 전에 프로모션 먼저 신청해 주셔야 광고 이머니가 지급됩니다.</div>
+        <p>ON 상태로 변경하기 전에 프로모션 먼저 신청해 주셔야 광고 이머니가 지급됩니다.</p>
         <div class="soft">
           <span><b>프로그램</b> G마켓 AI Product Ads 첫 광고 지원</span>
           <span><b>지원대상</b> 8/5 정식 오픈 이후 AI Product Ads 광고비 과금 이력이 없는 판매자</span>
@@ -828,7 +799,7 @@ footer{padding:44px 0 36px;border-top:1px solid var(--line);background:#fff}
           <span><b>신청·리워드 확인</b> 프로모션 신청 후 광고센터 내 프로모션 페이지 상단 배너 하단에서 판매자 ID별 프로모션 신청일 및 리워드 지급 금액을 확인할 수 있습니다.</span>
           <span><b>기간</b> 상시 (종료일 미정)</span>
         </div>
-        <a class="btn ai-btn2 form-btn" href="https://adcenter.esmplus.com/promotion" target="_blank" rel="noopener">광고센터에서 신청하기</a>
+        <a href="https://adcenter.esmplus.com/promotion" target="_blank" rel="noopener"><b>광고센터에서 신청하기</b></a>
       </article>
       <article class="card pc">
         <div><span class="badge b-green">상시 운영</span></div>
